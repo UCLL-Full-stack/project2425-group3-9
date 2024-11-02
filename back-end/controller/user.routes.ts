@@ -96,10 +96,3 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
     const user = await userService.getUserById(id);
     res.status(200).json(user);
 });
-
-//kheb t gefixt kga pushe
-// ow shit nice goeie bal pie
-//da werkt ni tegoei he als dit werkt ga ik pushe
-
-//Resolver error at paths./users/{id}.get.responses.200.content.application/json.schema.$ref
-//Could not resolve reference: Could not resolve pointer: /components/schemas/User does not exist in document
