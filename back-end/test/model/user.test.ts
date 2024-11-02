@@ -140,6 +140,9 @@ test('should add an animal and return it', () => {
 });
 
 test('should add multiple animals', () => {
+
+    
+
     const animal1 = new animal({
         firstname: 'Buddy',
         lastname: 'Smith',
