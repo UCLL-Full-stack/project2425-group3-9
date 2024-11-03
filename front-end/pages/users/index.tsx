@@ -37,6 +37,7 @@ const Users: React.FC = () => {
       <Header />
       <main className="d-flex flex-column justify-content-center align-items-center">
         <h1>CoWorkers</h1>
+        <h2>Click on a coworker to see more information!</h2>
         <section>
             { users && (
                 <UserOverviewTable users= {users} selectUser={selectUser}/>
