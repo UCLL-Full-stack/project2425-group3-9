@@ -5,11 +5,11 @@ import Link from 'next/link';
 import styles from '@styles/home.module.css';
 
 
-const Login: React.FC = () => {
+const Logout: React.FC = () => {
     return (
       <>
         <Head>
-          <title>Login</title>
+          <title>Logout</title>
           <meta name="description" content="WagePage app" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
@@ -22,11 +22,7 @@ const Login: React.FC = () => {
   
           <div className={styles.description}>
             <p>
-                bezig aan login pagina
-              {/* Courses lets you see as a lecturer all the courses you are teaching
-              and as a student all the courses you are enrolled in. <br />
-              You can also see when the courses are scheduled and the students
-              enrolled in each course. */}
+                bezig aan logout pagina!
             </p>
           </div>
         </main>
@@ -34,4 +30,4 @@ const Login: React.FC = () => {
     );
   };
   
-  export default Login;
+  export default Logout;

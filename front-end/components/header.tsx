@@ -14,8 +14,14 @@ const Header: React.FC = () => {
         <Link href="/users" className="nav-link px-4 fs-5 text-white">
           Co-workers
         </Link>
+        <Link href="/wageoverview" className="nav-link px-4 fs-5 text-white">
+          Wage Overview
+        </Link>
         <Link href="/login" className="nav-link px-4 fs-5 text-white">
           Log In
+        </Link>
+        <Link href="/logout" className="nav-link px-4 fs-5 text-white">
+          Log out
         </Link>
       </nav>
     </header>
