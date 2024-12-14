@@ -1,5 +1,7 @@
 import { user } from '../model/user';
+import { wage } from '../model/wage';
 import userDb from '../repository/user.db';
+import { WageInput } from '../types';
 
 // const getAllUsers = async (): Promise<user[]> => userDb.getAllUsers();
 
@@ -13,4 +15,14 @@ const getUserById = async (id: number): Promise<user> => {
     return user;
 };
 
-export default { getAllUsers, getUserById };
+const updateWage = async (id: number, newWage: WageInput ): Promise<wage> => {
+    try {
+        const user =  await getUserById(id);
+        const updatedWage = user.updateWage(newWage);
+        return updatedWage; 
+    } catch (error) {
+        throw new Error("Error while updating wage of user");
+    }
+}
+
+export default { getAllUsers, getUserById, updateWage };

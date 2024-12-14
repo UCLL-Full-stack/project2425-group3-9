@@ -36,7 +36,7 @@ export type workspace = {
 };
 
 export type user = {
-    id?: number;
+    id: number;
     username: string;
     password: string;
     admin: boolean;

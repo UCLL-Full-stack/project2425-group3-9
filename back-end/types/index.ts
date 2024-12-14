@@ -7,7 +7,6 @@ type AddressInput = {
 };
 
 type WageInput = {
-    total: number;
     amount: number;
     seniority: number;
     bonus: number;

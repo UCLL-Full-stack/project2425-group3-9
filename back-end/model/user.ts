@@ -1,3 +1,4 @@
+import { WageInput } from '../types';
 import { address } from './address';
 import { animal } from './animal';
 import { profile } from './profile';
@@ -61,6 +62,17 @@ export class user {
     }
 
     getWage(): wage {
+        return this.wage;
+    }
+
+    updateWage(newWage : WageInput ): wage {
+        if (!this.wage) {
+            throw new Error("User has no wage assigned to update!");
+        }
+        this.wage.setAmount(newWage.amount);
+        this.wage.setSeniority(newWage.seniority);
+        this.wage.setBonus(newWage.bonus);
+        this.wage.countAndSetTotal();
         return this.wage;
     }
 

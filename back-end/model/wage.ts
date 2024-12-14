@@ -11,6 +11,28 @@ export class wage {
         this.bonus = wage.bonus;
     }
 
+    countAndSetTotal(): number {
+        const total = this.amount + this.bonus;
+        this.total = total;
+        return this.total;
+    }
+
+    setAmount(amount: number) {
+        if (amount < 0) throw new Error("Amount cannot be negative!");
+        this.amount = amount;
+    }
+    
+    setSeniority(seniority: number) {
+        if (seniority < 0) throw new Error("Seniority cannot be negative!");
+        this.seniority = seniority;
+    }
+    
+    setBonus(bonus: number) {
+        if (bonus < 0) throw new Error("Bonus cannot be negative!");
+        this.bonus = bonus;
+    }
+    
+
     getTotal(): number {
         return this.total;
     }

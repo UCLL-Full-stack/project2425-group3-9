@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { user } from '@types';
+import UserService from '@services/UserService';
 
 type Props = {
   user: user;
@@ -11,12 +12,26 @@ const UserWageInfo: React.FC<Props> = ({ user }: Props) => {
     const [newSeniority, setNewSeniority] = useState<number>(user.wage.seniority);
     const [newBonus, setNewBonus] = useState<number>(user.wage.bonus);
 
-    // const handleSubmit = async(event) => {
-    //     event.preventDefault();
-        
-    //     
-    
-    // }
+    useEffect(() => {
+      setNewAmount(user.wage.amount);
+      setNewSeniority(user.wage.seniority);
+      setNewBonus(user.wage.bonus);
+    }, [user]);
+
+const handleClick = async() => {
+    const wage = {
+      amount: newAmount,
+      seniority: newSeniority,
+      bonus: newBonus
+    };
+
+    try {
+      await UserService.updateUserWage(user.id, wage);
+      window.location.reload();
+    } catch (error) {
+      throw new Error("error tijdens het event om wage van een user aan te passen");
+    }
+    }
 
   return (
     <>
@@ -46,7 +61,7 @@ const UserWageInfo: React.FC<Props> = ({ user }: Props) => {
                 <input type="number" name="bonusField" placeholder={String(user.wage.bonus)} value={newBonus}
                     onChange={(e) => setNewBonus(Number(e.target.value))} />
                 </td>
-                <td><button type="submit" >Submit!</button></td>
+                <td><button type="button" onClick={handleClick} >Submit!</button></td>
               </tr>
           </tbody>
         </table>

@@ -96,3 +96,52 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
     const user = await userService.getUserById(id);
     res.status(200).json(user);
 });
+
+/**
+ * @swagger
+ * /users/updateWage:
+ *   put:
+ *     summary: Update the wage of a user
+ *     description: Updates the wage of a user specified by the ID.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 description: The ID of the user whose wage will be updated.
+ *               wage:
+ *                 type: object
+ *                 properties:
+ *                   amount:
+ *                     type: number
+ *                     description: The base wage amount.
+ *                   seniority:
+ *                     type: number
+ *                     description: The seniority of the user.
+ *                   bonus:
+ *                     type: number
+ *                     description: The bonus the user receives.
+ *     responses:
+ *       200:
+ *         description: User's wage updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid request data or user not found.
+ */
+userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id, wage } = req.body;
+        const updatedUser = await userService.updateWage(id, wage);
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        next(error);
+    }
+});
+
