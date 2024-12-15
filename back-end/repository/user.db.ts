@@ -4,6 +4,7 @@ import { wage } from '../model/wage';
 import { workspace } from '../model/workspace';
 import { address } from '../model/address';
 
+
 const profile1 = new profile({
     email: 'johndoe@gmail.com',
     firstname: 'John',

@@ -5,12 +5,12 @@ import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { userRouter } from './controller/user.routes';
+import { animalRouter } from './controller/animal.routes';
 
 const app = express();
 dotenv.config();
 const port = process.env.APP_PORT || 3000;
 
-//ez
 
 app.use(cors({ origin: 'http://localhost:8080' }));
 app.use(bodyParser.json());
@@ -34,6 +34,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/users', userRouter);
 
+app.use('/animals', animalRouter);
+
+
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     res.status(400).json({
         status: 'application error',
@@ -47,8 +50,3 @@ app.listen(port || 3000, () => {
 
 export default app;
 
-// ah hem runt wel al de backend
-// alleen de status wel maar
-// kga eens in de swagger zien voor da te fixen
-
-//alleen de getusers en id ma kkrijg nogwel foutmeldingen
