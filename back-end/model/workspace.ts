@@ -1,3 +1,7 @@
+import {
+    Workspace as workspacePrisma,
+} from "@prisma/client"
+
 export class workspace {
     private name: string;
 
@@ -7,5 +11,11 @@ export class workspace {
 
     getName(): string {
         return this.name;
+    }
+
+    static from({ name }: workspacePrisma) {
+        return new workspace({
+            name
+        });
     }
 }

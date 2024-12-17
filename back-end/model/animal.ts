@@ -1,3 +1,7 @@
+import {  
+    Animal as animalPrisma,
+} from "@prisma/client"
+
 export class animal {
     private firstname: string;
     private lastname: string;
@@ -19,5 +23,12 @@ export class animal {
 
     getAge(): number {
         return this.age;
+    }
+    static from({ firstname, lastname, age }: animalPrisma) {
+        return new animal({
+            firstname,
+            lastname,
+            age
+        });
     }
 }

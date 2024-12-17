@@ -1,3 +1,7 @@
+import {  
+    Address as addressPrisma,
+} from "@prisma/client"
+
 export class address {
     private street: string;
     private city: string;
@@ -37,5 +41,14 @@ export class address {
 
     getCountry(): string {
         return this.country;
+    }
+    static from({ street, city, state, postalcode, country }: addressPrisma) {
+        return new address({
+            street,
+            city,
+            state,
+            postalcode, 
+            country,
+        });
     }
 }
