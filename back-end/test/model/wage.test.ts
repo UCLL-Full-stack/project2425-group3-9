@@ -1,6 +1,6 @@
-import { wage } from '../../model/wage';
+import { Wage } from '../../model/Wage';
 
-const testWage = new wage({
+const testWage = new Wage({
     total: 5000,
     amount: 3000,
     seniority: 5,

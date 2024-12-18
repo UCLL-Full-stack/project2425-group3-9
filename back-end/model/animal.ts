@@ -2,15 +2,15 @@ import {
     Animal as animalPrisma,
 } from "@prisma/client"
 
-export class animal {
+export class Animal {
     private firstname: string;
     private lastname: string;
     private age: number;
 
-    constructor(animal: { firstname: string; lastname: string; age: number }) {
-        this.firstname = animal.firstname;
-        this.lastname = animal.lastname;
-        this.age = animal.age;
+    constructor(Animal: { firstname: string; lastname: string; age: number }) {
+        this.firstname = Animal.firstname;
+        this.lastname = Animal.lastname;
+        this.age = Animal.age;
     }
 
     getFirstname(): string {
@@ -25,7 +25,7 @@ export class animal {
         return this.age;
     }
     static from({ firstname, lastname, age }: animalPrisma) {
-        return new animal({
+        return new Animal({
             firstname,
             lastname,
             age

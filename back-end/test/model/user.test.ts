@@ -1,11 +1,11 @@
-import { user } from '../../model/user';
-import { profile } from '../../model/profile';
-import { workspace } from '../../model/workspace';
-import { wage } from '../../model/wage';
-import { address } from '../../model/address';
-import { animal } from '../../model/animal';
+import { User } from '../../model/User';
+import { Profile } from '../../model/Profile';
+import { Workspace } from '../../model/Workspace';
+import { Wage } from '../../model/Wage';
+import { Address } from '../../model/Address';
+import { Animal } from '../../model/Animal';
 
-const testProfile = new profile({
+const testProfile = new Profile({
     email: 'test@example.com',
     firstname: 'John',
     lastname: 'Doe',
@@ -13,18 +13,18 @@ const testProfile = new profile({
     phonenumber: '123-456-7890',
 });
 
-const testWorkspace = new workspace({
+const testWorkspace = new Workspace({
     name: 'Apenresort',
 });
 
-const testWage = new wage({
+const testWage = new Wage({
     total: 23000,
     amount: 2000,
     seniority: 5,
     bonus: 500,
 });
 
-const testAddress = new address({
+const testAddress = new Address({
     street: '456 Elm St',
     city: 'Othertown',
     state: 'NY',
@@ -32,7 +32,7 @@ const testAddress = new address({
     country: 'USA',
 });
 
-const testUser = new user({
+const testUser = new User({
     id: 1,
     username: 'testuser',
     password: 'password123',
@@ -41,6 +41,7 @@ const testUser = new user({
     workspace: testWorkspace,
     wage: testWage,
     address: testAddress,
+    animals: []
 });
 
 test('should create a user with the provided properties', () => {
@@ -55,7 +56,7 @@ test('should create a user with the provided properties', () => {
 });
 
 test('should return undefined for id if not set', () => {
-    const userWithoutId = new user({
+    const userWithoutId = new User({
         username: 'userWithoutId',
         password: 'password123',
         admin: false,
@@ -63,12 +64,13 @@ test('should return undefined for id if not set', () => {
         workspace: testWorkspace,
         wage: testWage,
         address: testAddress,
+        animals: []
     });
     expect(userWithoutId.getId()).toBeUndefined();
 });
 
 test('should indicate if a user is an admin', () => {
-    const adminUser = new user({
+    const adminUser = new User({
         id: 2,
         username: 'adminuser',
         password: 'adminpass',
@@ -77,12 +79,13 @@ test('should indicate if a user is an admin', () => {
         workspace: testWorkspace,
         wage: testWage,
         address: testAddress,
+        animals: []
     });
     expect(adminUser.isAdmin()).toBe(true);
 });
 
 test('should not be an admin by default', () => {
-    const regularUser = new user({
+    const regularUser = new User({
         username: 'regularuser',
         password: 'userpass',
         admin: false,
@@ -90,6 +93,7 @@ test('should not be an admin by default', () => {
         workspace: testWorkspace,
         wage: testWage,
         address: testAddress,
+        animals: []
     });
     expect(regularUser.isAdmin()).toBe(false);
 });
@@ -126,7 +130,7 @@ test('should return the correct address', () => {
 });
 
 test('should add an animal and return it', () => {
-    const addedAnimal = new animal({
+    const addedAnimal = new Animal({
         firstname: 'Buddy',
         lastname: 'Smith',
         age: 4,
@@ -140,13 +144,13 @@ test('should add an animal and return it', () => {
 });
 
 test('should add multiple animals', () => {
-    const animal1 = new animal({
+    const animal1 = new Animal({
         firstname: 'Buddy',
         lastname: 'Smith',
         age: 4,
     });
 
-    const animal2 = new animal({
+    const animal2 = new Animal({
         firstname: 'Max',
         lastname: 'Johnson',
         age: 2,

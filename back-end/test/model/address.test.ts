@@ -1,6 +1,6 @@
-import { address } from '../../model/address'; // Update with the actual path
+import { Address } from '../../model/Address'; // Update with the actual path
 
-const testAddress = new address({
+const testAddress = new Address({
     street: '123 Main St',
     city: 'Anytown',
     state: 'CA',

@@ -1,30 +1,25 @@
 import { Profile as profilePrisma, 
-    Address as addressPrisma,
-    Workspace as workspacePrisma,
-    Wage as wagePrisma,
-    Animal as animalsPrisma,
-    User as usersPrisma
 } from "@prisma/client"
 
-export class profile {
+export class Profile {
     private email: string;
     private firstname: string;
     private lastname: string;
     private age: number;
     private phonenumber: string;
 
-    constructor(profile: {
+    constructor(Profile: {
         email: string;
         firstname: string;
         lastname: string;
         age: number;
         phonenumber: string;
     }) {
-        this.email = profile.email;
-        this.firstname = profile.firstname;
-        this.lastname = profile.lastname;
-        this.age = profile.age;
-        this.phonenumber = profile.phonenumber;
+        this.email = Profile.email;
+        this.firstname = Profile.firstname;
+        this.lastname = Profile.lastname;
+        this.age = Profile.age;
+        this.phonenumber = Profile.phonenumber;
     }
 
     getEmail(): string {
@@ -48,7 +43,7 @@ export class profile {
     }
 
     static from({ email, firstname, lastname, age, phonenumber }: profilePrisma)  {
-        return new profile({
+        return new Profile({
             email,
             firstname,
             lastname,

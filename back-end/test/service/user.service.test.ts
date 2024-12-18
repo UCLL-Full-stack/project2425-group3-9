@@ -1,8 +1,8 @@
-import { user } from '../../model/user';
-import { profile } from '../../model/profile';
-import { workspace } from '../../model/workspace';
-import { wage } from '../../model/wage';
-import { address } from '../../model/address';
+import { user } from '../../model/User';
+import { profile } from '../../model/Profile';
+import { workspace } from '../../model/Workspace';
+import { wage } from '../../model/Wage';
+import { address } from '../../model/Address';
 import userDb from '../../repository/user.db';
 import userService from '../../service/user.service';
 

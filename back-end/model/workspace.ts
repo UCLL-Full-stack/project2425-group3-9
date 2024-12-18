@@ -2,7 +2,7 @@ import {
     Workspace as workspacePrisma,
 } from "@prisma/client"
 
-export class workspace {
+export class Workspace {
     private name: string;
 
     constructor(workspace: { name: string }) {
@@ -14,7 +14,7 @@ export class workspace {
     }
 
     static from({ name }: workspacePrisma) {
-        return new workspace({
+        return new Workspace({
             name
         });
     }

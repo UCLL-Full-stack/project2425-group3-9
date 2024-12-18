@@ -1,11 +1,11 @@
-import { animal } from '../../model/animal';
-const testAnimal = new animal({
+import { Animal } from '../../model/Animal';
+const testAnimal = new Animal({
     firstname: 'Bella',
     lastname: 'Smith',
     age: 5,
 });
 
-test('should create an animal with the provided properties', () => {
+test('should create an Animal with the provided properties', () => {
     expect(testAnimal.getFirstname()).toBe('Bella');
     expect(testAnimal.getLastname()).toBe('Smith');
     expect(testAnimal.getAge()).toBe(5);

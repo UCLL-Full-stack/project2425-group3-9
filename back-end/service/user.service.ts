@@ -1,5 +1,5 @@
-import { user } from '../model/user';
-import { wage } from '../model/wage';
+import { user } from '../model/User';
+import { wage } from '../model/Wage';
 import userDb from '../repository/user.db';
 import { WageInput } from '../types';
 

@@ -1,6 +1,6 @@
-import { profile } from '../../model/profile';
+import { Profile } from '../../model/Profile';
 
-const testProfile = new profile({
+const testProfile = new Profile({
     email: 'test@example.com',
     firstname: 'John',
     lastname: 'Doe',

@@ -1,10 +1,10 @@
-import { animal } from "../model/animal"
+import { Animal } from "../model/Animal"
 import { AnimalInput } from "../types"
 import userDb from "./user.db"
 import database from "../util/database"
 
 
-const addAnimal = async (newAnimal: AnimalInput): Promise<animal> => {
+const addAnimal = async (newAnimal: AnimalInput): Promise<Animal> => {
     const addedAnimal = await database.animal.create({
         data: {
             firstname: newAnimal.firstname,
@@ -12,21 +12,21 @@ const addAnimal = async (newAnimal: AnimalInput): Promise<animal> => {
             age: newAnimal.age,
         },
     });
-    return new animal(addedAnimal);
+    return new Animal(addedAnimal);
 };
 
 
-const getAllAnimals = async (): Promise<animal[]> => {
+const getAllAnimals = async (): Promise<Animal[]> => {
     const animals = await database.animal.findMany({
         include: {
-            user: true,  
+            owner: true,  
         },
     });
-    return animals;
+    return animals.map((animal) => Animal.from(animal));
 };
 
 
-const getAnimalByName = async (name: string): Promise<animal | undefined> => {
+const getAnimalByName = async (name: string): Promise<Animal | undefined> => {
     const animalData = await database.animal.findFirst({
         where: {
             OR: [
@@ -35,22 +35,22 @@ const getAnimalByName = async (name: string): Promise<animal | undefined> => {
             ]
         },
         include: {
-            user: true,  
+            owner: true,  
         },
     });
-    return animalData ? new animal(animalData) : undefined;
+    return animalData ? new Animal(animalData) : undefined;
 };
 
 
-const deleteAnimal = async (deletedAnimal: animal): Promise<animal | null> => {
+const deleteAnimal = async (deletedAnimal: Animal): Promise<Animal | null> => {
     const animalToDelete = await database.animal.findUnique({
         where: {
-            firstName: deletedAnimal.getFirstname(), 
-            lastName: deletedAnimal.getLastname(), 
+            firstname: deletedAnimal.getFirstname(), 
+            lastname: deletedAnimal.getLastname(), 
             age: deletedAnimal.getAge(), 
         },
         include: {
-            user: true,  
+            owner: true,  
         },
     });
 
@@ -62,7 +62,7 @@ const deleteAnimal = async (deletedAnimal: animal): Promise<animal | null> => {
         where: { id: animalToDelete.id },
     });
 
-    return new animal(animalToDelete);
+    return new Animal(animalToDelete);
 };
 
 export default {

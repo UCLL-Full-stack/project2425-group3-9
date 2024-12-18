@@ -1,10 +1,6 @@
     import { add } from 'date-fns';
     import { WageInput } from '../types';
-    import { address } from './address';
-    import { animal } from './animal';
-    import { profile } from './profile';
-    import { wage } from './wage';
-    import { workspace } from './workspace';
+
     import { Profile as profilePrisma, 
         Address as addressPrisma,
         Workspace as workspacePrisma,
@@ -12,28 +8,34 @@
         Animal as animalsPrisma,
         User as usersPrisma
     } from "@prisma/client"
+    import { Profile } from './Profile';
+    import { Address } from './Address';
+    import { Workspace } from './Workspace';
+    import { Wage } from './Wage';
+    import { Animal } from './Animal';
 
 
-    export class user {
+    export class User {
         private id?: number;
         private username: string;
         private password: string;
         private admin: boolean;
-        private profile: profile;
-        private address: address;
-        private workspace: workspace;
-        private wage: wage;
-        private animals: animal[];
+        private profile: Profile;
+        private address: Address;
+        private workspace: Workspace;
+        private wage: Wage;
+        private animals: Animal[];
 
         constructor(user: {
             id?: number;
             username: string;
             password: string;
             admin: boolean;
-            profile: profile;
-            workspace: workspace;
-            wage: wage;
-            address: address;
+            profile: Profile;
+            workspace: Workspace;
+            wage: Wage;
+            address: Address;
+            animals: Animal[]
         }) {
             this.id = user.id;
             this.username = user.username;
@@ -62,19 +64,19 @@
             return this.admin;
         }
 
-        getProfile(): profile {
+        getProfile(): Profile {
             return this.profile;
         }
 
-        getWorkspace(): workspace {
+        getWorkspace(): Workspace {
             return this.workspace;
         }
 
-        getWage(): wage {
+        getWage(): Wage {
             return this.wage;
         }
 
-        updateWage(newWage : WageInput ): wage {
+        updateWage(newWage : WageInput ): Wage {
             if (!this.wage) {
                 throw new Error("User has no wage assigned to update!");
             }
@@ -85,15 +87,15 @@
             return this.wage;
         }
 
-        getAddress(): address {
+        getAddress(): Address {
             return this.address;
         }
 
-        getAnimals(): animal[] {
+        getAnimals(): Animal[] {
             return this.animals;
         }
 
-        addAnimal(addedAnimal: animal): animal {
+        addAnimal(addedAnimal: Animal): Animal {
             this.animals.push(addedAnimal);
             return addedAnimal;
         } 
@@ -103,11 +105,11 @@
             username,
             password,
             admin,
-            profile: profileData,
-            workspace: workspaceData,
-            wage: wageData,
-            address: addressData,
-            animals: animalData,
+            profile,
+            workspace,
+            wage,
+            address,
+            animals
         }: usersPrisma & {
             profile: profilePrisma;
             workspace: workspacePrisma;
@@ -115,16 +117,18 @@
             wage: wagePrisma;
             animals: animalsPrisma[];
         }) {
-            return new user({
+            return new User({
                 id,
                 username,
                 password,
                 admin,
-                profile: profile.from(profileData), 
-                workspace: workspace.from(workspaceData), 
-                wage: wage.from(wageData), 
-                address: address.from(addressData), 
+                profile: Profile.from(profile), 
+                workspace: Workspace.from(workspace), 
+                wage: Wage.from(wage), 
+                address: Address.from(address),
+                animals: animals.map((animal) => Animal.from(animal)),
             });
+
         }
         
     }

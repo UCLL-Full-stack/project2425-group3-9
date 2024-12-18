@@ -1,6 +1,6 @@
-import { workspace } from '../../model/workspace';
+import { Workspace } from '../../model/Workspace';
 
-const testWorkspace = new workspace({
+const testWorkspace = new Workspace({
     name: 'Test Workspace',
 });
 

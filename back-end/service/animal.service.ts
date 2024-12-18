@@ -1,4 +1,4 @@
-import {animal } from '../model/animal';
+import {animal } from '../model/Animal';
 import animalDb from '../repository/animal.db';
 import { AnimalInput } from '../types';
 

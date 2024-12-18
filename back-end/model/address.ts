@@ -2,25 +2,25 @@ import {
     Address as addressPrisma,
 } from "@prisma/client"
 
-export class address {
+export class Address {
     private street: string;
     private city: string;
     private state: string;
     private postalcode: number;
     private country: string;
 
-    constructor(address: {
+    constructor(Address: {
         street: string;
         city: string;
         state: string;
         postalcode: number;
         country: string;
     }) {
-        this.street = address.street;
-        this.city = address.city;
-        this.state = address.state;
-        this.postalcode = address.postalcode;
-        this.country = address.country;
+        this.street = Address.street;
+        this.city = Address.city;
+        this.state = Address.state;
+        this.postalcode = Address.postalcode;
+        this.country = Address.country;
     }
 
     getStreet(): string {
@@ -43,7 +43,7 @@ export class address {
         return this.country;
     }
     static from({ street, city, state, postalcode, country }: addressPrisma) {
-        return new address({
+        return new Address({
             street,
             city,
             state,

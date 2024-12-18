@@ -1,8 +1,8 @@
-import { user } from "../model/user";
+import { User } from "../model/User";
 import database from "../util/database";
 
 
-const getAllUsers = async (): Promise<user[]> => {
+const getAllUsers = async (): Promise<User[]> => {
     const usersPrisma = await database.user.findMany({
         include: {
             profile: true,
@@ -12,7 +12,7 @@ const getAllUsers = async (): Promise<user[]> => {
             animals: true,
         },
     });
-    return usersPrisma.map((userPrisma) => user.from(userPrisma));
+    return usersPrisma.map((userPrisma) => User.from(userPrisma));
 };
 
 const getUserById = async (id: number) => {

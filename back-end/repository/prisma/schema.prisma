@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" 
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -12,15 +12,15 @@ model User {
   username    String    @unique
   password    String
   admin       Boolean
-  profile     Profile   @relation(fields: [profileId], references: [id])
-  profileId   Int
-  address     Address   @relation(fields: [addressId], references: [id])
-  addressId   Int
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
-  workspaceId Int
-  wage        Wage      @relation(fields: [wageId], references: [id])
-  wageId      Int
-  animals     Animal[]
+  profileId   Int       @unique
+  profile     Profile   @relation(fields: [profileId], references: [id], name: "UserProfile")
+  addressId   Int       @unique
+  address     Address   @relation(fields: [addressId], references: [id], name: "UserAddress")
+  workspaceId Int 
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], name: "UserWorkspace")
+  wageId      Int       @unique
+  wage        Wage      @relation(fields: [wageId], references: [id], name: "UserWage")
+  animals     Animal[]?
 }
 
 model Profile {
@@ -30,9 +30,7 @@ model Profile {
   lastname    String
   age         Int
   phonenumber String
-  userId      Int     @unique
-  user        User    @relation(fields: [userId], references: [id])
-
+  user        User?   @relation(name: "UserProfile")
 }
 
 model Address {
@@ -42,13 +40,13 @@ model Address {
   state       String
   postalcode  Int
   country     String
-  user        User[]
+  user        User?   @relation(name: "UserAddress")
 }
 
 model Workspace {
   id          Int     @id @default(autoincrement())
   name        String
-  users       User[]
+  user        User?   @relation(name: "UserWorkspace")
 }
 
 model Wage {
@@ -57,14 +55,14 @@ model Wage {
   amount      Float
   seniority   Int
   bonus       Float
-  user        User[]
+  user        User?   @relation(name: "UserWage")
 }
 
 model Animal {
-  id          Int     @id @default(autoincrement())
-  firstname   String
-  lastname    String
-  age         Int
-  ownerId     Int
-  owner       User    @relation(fields: [ownerId], references: [id])
+  id        Int     @id @default(autoincrement())
+  firstname String
+  lastname  String
+  age       Int
+  userId    Int
+  owner     User    @relation(fields: [userId], references: [id])
 }
