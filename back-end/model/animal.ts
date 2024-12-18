@@ -7,7 +7,7 @@ export class Animal {
     private lastname: string;
     private age: number;
 
-    constructor(Animal: { firstname: string; lastname: string; age: number }) {
+    constructor(Animal: {firstname: string; lastname: string; age: number }) {
         this.firstname = Animal.firstname;
         this.lastname = Animal.lastname;
         this.age = Animal.age;

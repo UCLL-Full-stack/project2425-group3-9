@@ -3,11 +3,12 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-    await prisma.animal.deleteMany();
-    await prisma.user.deleteMany();
-    await prisma.wage.deleteMany();
+  await prisma.wage.deleteMany();
     await prisma.workspace.deleteMany();
     await prisma.address.deleteMany();
+    await prisma.animal.deleteMany();
+    await prisma.user.deleteMany();
+    
 
     // Maak de gebruiker met alle gerelateerde data
     const user1 = await prisma.user.create({

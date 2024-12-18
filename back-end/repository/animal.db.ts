@@ -13,7 +13,7 @@ const addAnimal = async (newAnimal: AnimalInput, userid : number): Promise<Anima
             userId: userid,
         },
     });
-    return new Animal(addedAnimal);
+    return Animal.from(addedAnimal);
 };
 
 
@@ -27,42 +27,45 @@ const getAllAnimals = async (): Promise<Animal[]> => {
 };
 
 
-const getAnimalByName = async (name: string): Promise<Animal | undefined> => {
+const getAnimalByName = async (name: string): Promise<Animal> => {
     const animalData = await database.animal.findFirst({
         where: {
-            OR: [
-                { firstname: { equals: name, mode: 'insensitive' } },
-                { lastname: { equals: name, mode: 'insensitive' } }
-            ]
+            firstname: name
         },
         include: {
             user: true,  
         },
     });
-    return animalData ? new Animal(animalData) : undefined;
-};
-
-
-const deleteAnimal = async (animalFirstName: string): Promise<Animal | null> => {
-    const animalToDelete = await database.animal.findUnique({
-        where: {
-            firstname: animalFirstName
-        },
-        include: {
-            user: true,  
-        },
-        
-    });
-
-    if (!animalToDelete) {
-        return null;
+    if (!animalData) {
+        throw new Error(`Animal with name ${name} does not exist.`);
     }
 
+    return Animal.from(animalData);
+};
+
+const getUserIdOfAnimalName = async (animalname : string) : Promise<number | null> => {
+    const animalData = await database.animal.findFirst({
+        where: {
+            firstname: animalname
+        },
+        include: {
+            user: true,  
+        },
+    });
+    if (!animalData) {
+        return null
+    }
+    return animalData.userId;
+}
+
+
+const deleteAnimal = async (animal: Animal, userId: number): Promise<Animal | null> => {
+    
     await database.animal.delete({
-        where: { id: animalToDelete.id },
+        where: { firstname: animal.getFirstname(), lastname: animal.getLastname(), age : animal.getAge(), userId : userId },
     });
 
-    return new Animal(animalToDelete);
+    return animal;
 };
 
 export default {
@@ -70,4 +73,5 @@ export default {
     getAnimalByName,
     addAnimal,
     deleteAnimal,
+    getUserIdOfAnimalName,
 };

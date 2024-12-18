@@ -4,17 +4,16 @@ import { AnimalInput } from '../types';
 
 
 
-const getAllAnimals = (): Animal[] => {
+const getAllAnimals = (): Promise<Animal[]> => {
     return animalDb.getAllAnimals();
 };
 
 const getAnimalByName = async (name: string): Promise<Animal> => {
-    const animal = animalDb.getAnimalByName(name);
-    if (!animal) throw new Error(`Animal with name ${name} does not exist.`);
+    const animal = await animalDb.getAnimalByName(name);
     return animal;
 };
 
-const addAnimal = (animalType: AnimalInput): Animal => {
+const addAnimal = (animalType: AnimalInput, userid : number): Promise<Animal> => {
     if (!animalType.firstname || typeof animalType.firstname !== 'string' || animalType.firstname.trim() === '') {
         throw new Error('Invalid firstname: must be a non-empty string.');
     }
@@ -25,13 +24,24 @@ const addAnimal = (animalType: AnimalInput): Animal => {
     if (typeof animalType.age !== 'number' || animalType.age < 0) {
         throw new Error('Invalid age: must be a non-negative number.');
     }
-    return animalDb.addAnimal(animalType);
+    return animalDb.addAnimal(animalType, userid);
 };
+
+const getUserIdOfAnimalName = async (animalname: string) : Promise<number> => {
+    const id = await animalDb.getUserIdOfAnimalName(animalname);
+    if (id === null) {
+        throw new Error(`Couldn't find id of animal because animal with name ${animalname} doesn't exist!`)
+    }
+    return id;
+}
 
 const deleteAnimal = async (animalname: string) : Promise<Animal | null> => {
     const animal = await getAnimalByName(animalname);
-
-    return animalDb.deleteAnimal(animal);
+    if (!animal) {
+        throw new Error(`No Animal found with name ${animalname}`);
+    }
+    const id = await getUserIdOfAnimalName(animalname);
+    return animalDb.deleteAnimal(animal, id);
 
 
 }
