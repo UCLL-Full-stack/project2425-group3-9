@@ -20,11 +20,11 @@
         private username: string;
         private password: string;
         private admin: boolean;
-        private profile: Profile;
-        private address: Address;
-        private workspace: Workspace;
-        private wage: Wage;
-        private animals: Animal[];
+        private profile: Profile | null;
+        private address: Address | null;
+        private workspace: Workspace | null;
+        private wage: Wage | null;
+        private animals: Animal[] | null;
 
         constructor(user: {
             id?: number;
@@ -64,15 +64,15 @@
             return this.admin;
         }
 
-        getProfile(): Profile {
+        getProfile(): Profile | null {
             return this.profile;
         }
 
-        getWorkspace(): Workspace {
+        getWorkspace(): Workspace | null {
             return this.workspace;
         }
 
-        getWage(): Wage {
+        getWage(): Wage | null {
             return this.wage;
         }
 
@@ -87,18 +87,18 @@
             return this.wage;
         }
 
-        getAddress(): Address {
+        getAddress(): Address | null{
             return this.address;
         }
 
-        getAnimals(): Animal[] {
+        getAnimals(): Animal[] | null{
             return this.animals;
         }
 
-        addAnimal(addedAnimal: Animal): Animal {
-            this.animals.push(addedAnimal);
-            return addedAnimal;
-        } 
+        // addAnimal(addedAnimal: Animal): Animal | null {
+        //     this.animals.push(addedAnimal);
+        //     return addedAnimal;
+        // } 
 
         static from({
             id,

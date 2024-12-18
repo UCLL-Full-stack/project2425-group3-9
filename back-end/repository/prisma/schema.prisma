@@ -12,57 +12,52 @@ model User {
   username    String    @unique
   password    String
   admin       Boolean
-  profileId   Int       @unique
-  profile     Profile   @relation(fields: [profileId], references: [id], name: "UserProfile")
-  addressId   Int       @unique
-  address     Address   @relation(fields: [addressId], references: [id], name: "UserAddress")
-  workspaceId Int 
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], name: "UserWorkspace")
-  wageId      Int       @unique
-  wage        Wage      @relation(fields: [wageId], references: [id], name: "UserWage")
-  animals     Animal[]?
+  profile     Profile?
+  address     Address?
+  workspace   Workspace?
+  wage        Wage?
+  animals     Animal[]
 }
 
 model Profile {
-  id          Int     @id @default(autoincrement())
   email       String  @unique
   firstname   String
   lastname    String
   age         Int
   phonenumber String
-  user        User?   @relation(name: "UserProfile")
+  userId      Int    @unique
+  user        User   @relation(fields: [userId], references: [id])
 }
 
 model Address {
-  id          Int     @id @default(autoincrement())
   street      String
   city        String
   state       String
   postalcode  Int
   country     String
-  user        User?   @relation(name: "UserAddress")
+  userId      Int     @unique
+  user        User?   @relation(fields: [userId], references: [id])
 }
 
 model Workspace {
-  id          Int     @id @default(autoincrement())
   name        String
-  user        User?   @relation(name: "UserWorkspace")
+  userId      Int     @unique
+  user        User?   @relation(fields: [userId], references: [id])
 }
 
 model Wage {
-  id          Int     @id @default(autoincrement())
   total       Float
   amount      Float
   seniority   Int
   bonus       Float
-  user        User?   @relation(name: "UserWage")
+  userId      Int     @unique
+  user        User?   @relation(fields: [userId], references: [id])
 }
 
 model Animal {
-  id        Int     @id @default(autoincrement())
   firstname String
   lastname  String
   age       Int
-  userId    Int
-  owner     User    @relation(fields: [userId], references: [id])
+  userId      Int    @unique
+  user        User   @relation(fields: [userId], references: [id])
 }
