@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Replace with your DB provider
+  provider = "postgresql" 
   url      = env("DATABASE_URL")
 }
 
@@ -12,7 +12,8 @@ model User {
   username    String    @unique
   password    String
   admin       Boolean
-  profile     Profile?  @relation() 
+  profile     Profile   @relation(fields: [profileId], references: [id])
+  profileId   Int
   address     Address   @relation(fields: [addressId], references: [id])
   addressId   Int
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
@@ -31,6 +32,7 @@ model Profile {
   phonenumber String
   userId      Int     @unique
   user        User    @relation(fields: [userId], references: [id])
+
 }
 
 model Address {

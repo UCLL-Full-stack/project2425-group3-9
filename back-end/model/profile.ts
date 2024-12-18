@@ -1,3 +1,11 @@
+import { Profile as profilePrisma, 
+    Address as addressPrisma,
+    Workspace as workspacePrisma,
+    Wage as wagePrisma,
+    Animal as animalsPrisma,
+    User as usersPrisma
+} from "@prisma/client"
+
 export class profile {
     private email: string;
     private firstname: string;
@@ -37,5 +45,15 @@ export class profile {
 
     getPhonenumber(): string {
         return this.phonenumber;
+    }
+
+    static from({ email, firstname, lastname, age, phonenumber }: profilePrisma)  {
+        return new profile({
+            email,
+            firstname,
+            lastname,
+            age, 
+            phonenumber,
+        });
     }
 }

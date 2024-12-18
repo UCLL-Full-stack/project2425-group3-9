@@ -1,85 +1,73 @@
 import { animal } from "../model/animal"
 import { AnimalInput } from "../types"
 import userDb from "./user.db"
+import database from "../util/database"
 
 
-const animal1 = new animal({
-    firstname: "Shadow",
-    lastname: "Breeze",
-    age: 2
-})
+const addAnimal = async (newAnimal: AnimalInput): Promise<animal> => {
+    const addedAnimal = await database.animal.create({
+        data: {
+            firstname: newAnimal.firstname,
+            lastname: newAnimal.lastname,
+            age: newAnimal.age,
+        },
+    });
+    return new animal(addedAnimal);
+};
 
-const animal2 = new animal({
-    firstname: "Stormy",
-    lastname: "Blaze",
-    age: 3
-})
 
-const animal3 = new animal({
-    firstname: "Silver",
-    lastname: "Moon",
-    age: 5
-})
-
-const animals = [
-    animal1,
-    animal2,
-    animal3
-]
-
-const addAnimal = (newAnimal: AnimalInput) : animal => {
-    const addedAnimal = new animal({
-        firstname: newAnimal.firstname,
-        lastname: newAnimal.lastname,
-        age: newAnimal.age,
-    })
-    animals.push(addedAnimal);
-    return addedAnimal;
-
-    
-}
-
-const getAllAnimals = (): animal[] => {
+const getAllAnimals = async (): Promise<animal[]> => {
+    const animals = await database.animal.findMany({
+        include: {
+            user: true,  
+        },
+    });
     return animals;
 };
 
-const getAnimalByName = (name: string): animal | undefined => {
-    return animals.find(
-        (animal) =>
-            animal.getFirstname().toLowerCase() === name.toLowerCase() ||
-            animal.getLastname().toLowerCase() === name.toLowerCase()
-    );
+
+const getAnimalByName = async (name: string): Promise<animal | undefined> => {
+    const animalData = await database.animal.findFirst({
+        where: {
+            OR: [
+                { firstname: { equals: name, mode: 'insensitive' } },
+                { lastname: { equals: name, mode: 'insensitive' } }
+            ]
+        },
+        include: {
+            user: true,  
+        },
+    });
+    return animalData ? new animal(animalData) : undefined;
 };
 
-const deleteAnimal = (deletedAnimal: animal): animal | null => {
-    const index = animals.findIndex(
-        (animal) =>
-            animal.getFirstname() === deletedAnimal.getFirstname() &&
-            animal.getLastname() === deletedAnimal.getLastname() &&
-            animal.getAge() === deletedAnimal.getAge()
-    );
-    if (index === -1) {
+
+const deleteAnimal = async (deletedAnimal: animal): Promise<animal | null> => {
+    const animalToDelete = await database.animal.findUnique({
+        where: {
+            firstName: deletedAnimal.getFirstname(), 
+            lastName: deletedAnimal.getLastname(), 
+            age: deletedAnimal.getAge(), 
+        },
+        include: {
+            user: true,  
+        },
+    });
+
+    if (!animalToDelete) {
         return null;
     }
 
-    const [removedAnimal] = animals.splice(index, 1);
-    return removedAnimal;
+    await database.animal.delete({
+        where: { id: animalToDelete.id },
+    });
+
+    return new animal(animalToDelete);
 };
-
-
-const user1 = userDb.getUserById(1);
-const user2 = userDb.getUserById(2);
-
-user1?.addAnimal(animal1);
-user1?.addAnimal(animal2);
-user2?.addAnimal(animal3);
-
-
 
 export default {
     getAllAnimals,
     getAnimalByName,
     addAnimal,
     deleteAnimal,
-
-}
+};
