@@ -87,5 +87,5 @@ export class user {
     addAnimal(addedAnimal: animal): animal {
         this.animals.push(addedAnimal);
         return addedAnimal;
-    }
+    } 
 }
