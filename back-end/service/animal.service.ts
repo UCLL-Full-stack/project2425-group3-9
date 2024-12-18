@@ -1,20 +1,20 @@
-import {animal } from '../model/Animal';
+import {Animal } from '../model/Animal';
 import animalDb from '../repository/animal.db';
 import { AnimalInput } from '../types';
 
 
 
-const getAllAnimals = (): animal[] => {
+const getAllAnimals = (): Animal[] => {
     return animalDb.getAllAnimals();
 };
 
-const getAnimalByName = async (name: string): Promise<animal> => {
+const getAnimalByName = async (name: string): Promise<Animal> => {
     const animal = animalDb.getAnimalByName(name);
     if (!animal) throw new Error(`Animal with name ${name} does not exist.`);
     return animal;
 };
 
-const addAnimal = (animalType: AnimalInput): animal => {
+const addAnimal = (animalType: AnimalInput): Animal => {
     if (!animalType.firstname || typeof animalType.firstname !== 'string' || animalType.firstname.trim() === '') {
         throw new Error('Invalid firstname: must be a non-empty string.');
     }
@@ -28,7 +28,7 @@ const addAnimal = (animalType: AnimalInput): animal => {
     return animalDb.addAnimal(animalType);
 };
 
-const deleteAnimal = async (animalname: string) : Promise<animal | null> => {
+const deleteAnimal = async (animalname: string) : Promise<Animal | null> => {
     const animal = await getAnimalByName(animalname);
 
     return animalDb.deleteAnimal(animal);

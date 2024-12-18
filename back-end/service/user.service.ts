@@ -1,21 +1,22 @@
-import { user } from '../model/User';
-import { wage } from '../model/Wage';
+import { User } from '../model/User';
+import { Wage } from '../model/Wage';
 import userDb from '../repository/user.db';
 import { WageInput } from '../types';
 
 // const getAllUsers = async (): Promise<user[]> => userDb.getAllUsers();
 
-const getAllUsers = (): user[] => {
-    return userDb.getAllUsers();
+const getAllUsers = (): Promise<User[]> => {
+    const users = userDb.getAllUsers();
+    return users;
 };
 
-const getUserById = async (id: number): Promise<user> => {
+const getUserById = async (id: number): Promise<User> => {
     const user = userDb.getUserById(id);
-    if (!user) throw new Error(`User with id &{id} does not exist.`);
+    if (!user) throw new Error(`User with id ${id} does not exist.`);
     return user;
 };
 
-const updateWage = async (id: number, newWage: WageInput ): Promise<wage> => {
+const updateWage = async (id: number, newWage: WageInput ): Promise<Wage> => {
     try {
         const user =  await getUserById(id);
         const updatedWage = user.updateWage(newWage);

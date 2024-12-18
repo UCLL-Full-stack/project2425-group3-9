@@ -4,12 +4,13 @@ import userDb from "./user.db"
 import database from "../util/database"
 
 
-const addAnimal = async (newAnimal: AnimalInput): Promise<Animal> => {
+const addAnimal = async (newAnimal: AnimalInput, userid : number): Promise<Animal> => {
     const addedAnimal = await database.animal.create({
         data: {
             firstname: newAnimal.firstname,
             lastname: newAnimal.lastname,
             age: newAnimal.age,
+            userId: userid,
         },
     });
     return new Animal(addedAnimal);
@@ -19,7 +20,7 @@ const addAnimal = async (newAnimal: AnimalInput): Promise<Animal> => {
 const getAllAnimals = async (): Promise<Animal[]> => {
     const animals = await database.animal.findMany({
         include: {
-            owner: true,  
+            user: true,  
         },
     });
     return animals.map((animal) => Animal.from(animal));
@@ -35,23 +36,22 @@ const getAnimalByName = async (name: string): Promise<Animal | undefined> => {
             ]
         },
         include: {
-            owner: true,  
+            user: true,  
         },
     });
     return animalData ? new Animal(animalData) : undefined;
 };
 
 
-const deleteAnimal = async (deletedAnimal: Animal): Promise<Animal | null> => {
+const deleteAnimal = async (animalFirstName: string): Promise<Animal | null> => {
     const animalToDelete = await database.animal.findUnique({
         where: {
-            firstname: deletedAnimal.getFirstname(), 
-            lastname: deletedAnimal.getLastname(), 
-            age: deletedAnimal.getAge(), 
+            firstname: animalFirstName
         },
         include: {
-            owner: true,  
+            user: true,  
         },
+        
     });
 
     if (!animalToDelete) {
