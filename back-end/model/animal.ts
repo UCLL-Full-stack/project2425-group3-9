@@ -47,7 +47,7 @@ export class Animal {
     }
 
     validateAge (age: number) : number {
-        if (age <= 0) {
+        if (age < 0) {
             throw new Error("Age cannot be negative!")
         }
         return age;

@@ -75,14 +75,14 @@ export class Address {
     }
 
     validateNumber (number: number) : number {
-        if (number <= 0) {
+        if (number < 0) {
             throw new Error("Number cannot be negative!")
         }
         return number;
     }
 
     validatePostalCode (postalCode: number) : number {
-        if (postalCode <= 0) {
+        if (postalCode < 0) {
             throw new Error("PostalCode cannot be negative!")
         }
         return postalCode;

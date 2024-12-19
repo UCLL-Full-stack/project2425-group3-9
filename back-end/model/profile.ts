@@ -1,5 +1,7 @@
 import { Profile as profilePrisma, 
+    Workspace as workspacePrisma
 } from "@prisma/client"
+import { Workspace } from "./Workspace";
 
 export class Profile {
     private email: string;
@@ -14,6 +16,7 @@ export class Profile {
         lastname: string;
         age: number;
         phonenumber: string;
+
     }) {
         this.email = this.validateEmail(Profile.email);
         this.firstname = this.validateFirstName(Profile.firstname);
@@ -88,7 +91,7 @@ export class Profile {
     }
 
     validateAge (age: number) : number {
-        if (age <= 0) {
+        if (age < 0) {
             throw new Error("Age cannot be negative!")
         }
         return age;

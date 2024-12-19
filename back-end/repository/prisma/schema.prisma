@@ -11,38 +11,39 @@ model User {
   id          Int       @id @default(autoincrement())
   username    String    @unique
   password    String
-  admin       Boolean
   profile     Profile?
-  address     Address?
-  workspace   Workspace?
+  address     Address @relation(fields: [adressId], references: [id])
+  adressId    Int
   wage        Wage?
   animals     Animal[]
 }
 
 model Profile {
+  id          Int       @id @default(autoincrement())
   email       String  @unique
   firstname   String
   lastname    String
   age         Int
   phonenumber String
+  workspaces  Workspace[]
   userId      Int    @unique
   user        User   @relation(fields: [userId], references: [id])
 }
 
 model Address {
+  id          Int       @id @default(autoincrement())
   street      String
   city        String
   number      Int
   postalcode  Int
   country     String
-  userId      Int     @unique
-  user        User?   @relation(fields: [userId], references: [id])
+  users       User[]
 }
 
 model Workspace {
+  id          Int       @id @default(autoincrement())
   name        String
-  userId      Int     @unique
-  user        User?   @relation(fields: [userId], references: [id])
+  profiles    Profile[]
 }
 
 model Wage {

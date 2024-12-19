@@ -9,7 +9,6 @@ const getUserById = async (id: number): Promise<User> => {
         where: { id },
         include: {
             profile: true,
-            workspace: true,
             wage: true,
             address: true,
             animals: true,
@@ -26,7 +25,6 @@ const getAllUsers = async (): Promise<User[]> => {
         const usersPrisma = await database.user.findMany({
             include: {
                 profile: true,
-                workspace: true,
                 wage: true,
                 address: true,
                 animals: true

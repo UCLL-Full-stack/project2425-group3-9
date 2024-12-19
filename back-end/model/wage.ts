@@ -55,28 +55,28 @@ export class Wage {
     }
 
     validateTotal (number: number) : number {
-        if (number <= 0) {
+        if (number < 0) {
             throw new Error("Total cannot be negative!")
         }
         return number;
     }
 
     validateAmount (number: number) : number {
-        if (number <= 0) {
+        if (number < 0) {
             throw new Error("Amount cannot be negative!")
         }
         return number;
     }
 
     validateSeniority (number: number) : number {
-        if (number <= 0) {
+        if (number < 0) {
             throw new Error("Seniority cannot be negative!")
         }
         return number;
     }
 
     validateBonus (number: number) : number {
-        if (number <= 0) {
+        if (number < 0) {
             throw new Error("Bonus cannot be negative!")
         }
         return number;

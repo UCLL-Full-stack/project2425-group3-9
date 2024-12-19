@@ -15,7 +15,6 @@ async function main() {
         data: {
             username: 'john_doe',
             password: 'hashed_password_1',
-            admin: true,
             profile: {
                 create: {
                     email: 'john@example.com',
@@ -23,6 +22,13 @@ async function main() {
                     lastname: 'Doe',
                     age: 30,
                     phonenumber: '123-456-7890',
+                    workspaces: {
+                        create: [
+                            {
+                                name: 'Workspace A', // Dit is een individueel werkruimte-object
+                            },
+                        ],
+                    },
                 },
             },
             address: {
@@ -32,11 +38,6 @@ async function main() {
                     number: 2,
                     postalcode: 10001,
                     country: 'USA',
-                },
-            },
-            workspace: {
-                create: {
-                    name: 'Workspace A', // Werkruimte wordt nu binnen de gebruiker gecreëerd
                 },
             },
             wage: {
@@ -63,7 +64,6 @@ async function main() {
         data: {
             username: 'jane_doe',
             password: 'hashed_password_2',
-            admin: false,
             profile: {
                 create: {
                     email: 'jane@example.com',
@@ -71,6 +71,13 @@ async function main() {
                     lastname: 'Doe',
                     age: 28,
                     phonenumber: '987-654-3210',
+                    workspaces: {
+                        create: [
+                            {
+                                name: 'Workspace B', // Dit is een individueel werkruimte-object
+                            },
+                        ],
+                    },
                 },
             },
             address: {
@@ -80,11 +87,6 @@ async function main() {
                     number: 134,
                     postalcode: 94105,
                     country: 'USA',
-                },
-            },
-            workspace: {
-                create: {
-                    name: 'Workspace B', // Werkruimte wordt nu binnen de gebruiker gecreëerd
                 },
             },
             wage: {
