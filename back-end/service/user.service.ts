@@ -1,7 +1,7 @@
 import { User } from '../model/User';
 import { Wage } from '../model/Wage';
 import userDb from '../repository/user.db';
-import { UserInput, WageInput } from '../types';
+import { UserInput, WageInput, AuthenticationResponse } from '../types';
 import bcrypt from "bcrypt";
 
 const getAllUsers = async (): Promise<User[]> => {
@@ -30,12 +30,9 @@ const updateWage = async (id: number, newWage: WageInput ): Promise<Wage> => {
         throw new Error("Error while updating wage of user");
     }
 }
-interface AuthenticationResponse {
-    token: string;
-    username: string;
-}
+
 const authenticate = async ({ username, password }: UserInput): Promise<AuthenticationResponse> => {
-    const user = await userDb.getUserByUsername(username);
+    const user = await userDb.getUserByUsername({username});
 
     const isValidPassword = await bcrypt.compare(password, user.getPassword());
 
@@ -43,7 +40,7 @@ const authenticate = async ({ username, password }: UserInput): Promise<Authenti
         throw new Error('Incorrect password.');
     }
     return {
-        token: userDb.generateJwtToken({ username }),
+        token: userDb.generateJwtToken({ username, role: user.getRole() }),
         username: username,
     };
 };
@@ -51,53 +48,52 @@ const authenticate = async ({ username, password }: UserInput): Promise<Authenti
 // const createUser = async ({
 //     username,
 //     password,
-//     admin,
 // }: UserInput): Promise<User> => {
-//     const existingUser = await userDb.getUserByUsername(username);
+//     const existingUser = await userDb.getUserByUsername({username});
 //     if (existingUser) {
 //         throw new Error(`User with username {{username) is already registered.`);
 //     }
 //     const hashedPassword = await bcrypt.hash(password, 12);
-//     const user = new User ({username, password: hashedPassword, admin, profile: undefined, workspace: undefined, wage: undefined, address: undefined, animals: []});
+//     const user = new User ({username, password: hashedPassword, role: undefined, profile: undefined, wage: undefined, address: undefined, animals: []});
 //     return await userDb.createUser(user);
 // };
 
-// const createUser = async ({ username, password, role }: UserInput): Promise<User> => {
-//     const existingUser = await userDb.getUserByUsername( username );
+const createUser = async ({ username, password, role }: UserInput): Promise<User> => {
+    const existingUser = await userDb.getUserByUsername( {username} );
 
-//     if (existingUser) {
-//         throw new Error(`User with username ${username} is already registered.`);
-//     }
+    if (existingUser) {
+        throw new Error(`User with username ${username} is already registered.`);
+    }
 
-//     const hashedPassword = await bcrypt.hash(password, 12);
-//     const user = new User({ username, password: hashedPassword, role });
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const user = new User({ username, password: hashedPassword, role, profile: null, animals: [], address: null});
 
-//     const createdUser = await userDb.createUser(user);
+    const createdUser = await userDb.createUser(user);
 
-//     console.log('Created User:', createdUser);
+    console.log('Created User:', createdUser);
 
-//     if (!createdUser.getId()) {
-//         throw new Error('User creation failed, ID is missing.');
-//     }
+    if (!createdUser.getId()) {
+        throw new Error('User creation failed, ID is missing.');
+    }
 
-//     if (user.getRole() === 'caretaker') {
-//         const caretaker = new Caretaker({
-//             user,
-//             name: username.replace(//g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()),
-//             });
-//         await userDb.createCaretaker(caretaker, createdUser);
-//     } else if (user.getRole() === 'manager') {
-//         const manager = new Manager({
-//             user,
-//             name: username.replace(//g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()),
-//         });
-//         await userDb.createManager(manager, createdUser);
-//     } else {
-//         throw new Error('Can only add user with role: "Caretaker" or "Manager"!');
-//     }
+    // if (user.getRole() === 'caretaker') {
+    //     const caretaker = new Caretaker({
+    //         user,
+    //         name: username.replace(//g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()),
+    //         });
+    //     await userDb.createCaretaker(caretaker, createdUser);
+    // } else if (user.getRole() === 'employee') {
+    //     const manager = new Employee({
+    //         user,
+    //         name: username.replace(//g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()),
+    //     });
+    //     await userDb.createManager(manager, createdUser);
+    // } else {
+    //     throw new Error('Can only add user with role: "Caretaker" or "Manager"!');
+    // }
 
-//     return createdUser;
-// };
+    return createdUser;
+};
 
 
 export default { 
@@ -105,6 +101,6 @@ export default {
     getUserById, 
     updateWage, 
     authenticate,
-    //createUser,
+    createUser,
 };
 

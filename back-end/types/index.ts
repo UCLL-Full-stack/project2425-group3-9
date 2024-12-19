@@ -1,3 +1,10 @@
+type Role = "admin" | "caretaker" | "employee";
+
+type AuthenticationResponse = {
+    token: string;
+    username: string;
+}
+
 type AddressInput = {
     street: string;
     city: string;
@@ -24,7 +31,7 @@ type UserInput = {
     id?: number;
     username: string;
     password: string;
-    admin: boolean;
+    role: Role;
     profile: ProfileInput;
     workspace: WorkspaceInput;
     wage: WageInput;
@@ -42,4 +49,4 @@ type WorkspaceInput = {
     name: string;
 };
 
-export { AddressInput, WageInput, ProfileInput, UserInput, WorkspaceInput, AnimalInput };
+export { AddressInput, WageInput, ProfileInput, UserInput, WorkspaceInput, AnimalInput, Role, AuthenticationResponse };

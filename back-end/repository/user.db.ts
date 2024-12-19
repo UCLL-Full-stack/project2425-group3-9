@@ -39,12 +39,11 @@ const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
-const getUserByUsername = async (username: string) : Promise<User> => {
+const getUserByUsername = async ({username}: {username: string}) : Promise<User> => {
     const userPrisma = await database.user.findUnique({
         where: { username },
         include: {
             profile: true,
-            workspace: true,
             wage: true,
             address: true,
             animals: true,
@@ -56,14 +55,14 @@ const getUserByUsername = async (username: string) : Promise<User> => {
     return User.from(userPrisma);
 };
 
-const generateJwtToken = ({ username }: { username: string }): string => {
+const generateJwtToken = ({ username, role}: { username: string; role: string }): string => {
     const options = { expiresIn: `${process.env.JWT_EXPIRES_HOURS}h`, issuer: 'courses_app' };
     const secret = process.env.JWT_SECRET;
     if (!secret) {
         throw new Error('JWT secret is not defined');
     }
     try {
-        return jwt.sign({ username }, secret, options);
+        return jwt.sign({ username, role}, secret, options);
     } catch (error) {
         console.log(error);
         throw new Error('Error generating JWT token, see server log for details.');
@@ -91,21 +90,30 @@ const generateJwtToken = ({ username }: { username: string }): string => {
 //         throw new Error("Database error. See server log for details.");
 //     }
 // };
-// const createUser = async (user: User): Promise<User> => {
-//     try {
-//         const UserPrisma = await database.user.create({
-//             data: {
-//                 username: user.getUsername(),
-//                 password: user.getPassword(),
-//                 role: user.getRole(),
-//             },
-//         });
-//         return User.from(UserPrisma);
-//     } catch (error) {
-//         console.error(error);
-//         throw new Error('Database error. See server log for details.');
-//     }
-// };
+
+
+const createUser = async (user: User): Promise<User> => {
+    try {
+        const UserPrisma = await database.user.create({
+            data: {
+                username: user.getUsername(),
+                password: user.getPassword(),
+                role: user.getRole(),
+            },
+            include: {
+                profile: true, 
+                address: true,
+                wage: true, 
+                animals: true, 
+            },
+        });
+        return User.from(UserPrisma);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Database error. See server log for details.');
+    }
+};
+
 
 
 
@@ -114,5 +122,5 @@ export default {
     getUserById,
     getUserByUsername,
     generateJwtToken,
-    //createUser,
+    createUser,
 };

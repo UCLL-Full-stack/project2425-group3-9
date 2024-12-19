@@ -9,14 +9,16 @@
     } from "@prisma/client"
     import { Profile } from './Profile';
     import { Address } from './Address';
-    import { Workspace } from './Workspace';
     import { Wage } from './Wage';
     import { Animal } from './Animal';
+    import { Role } from '../types'; 
+
 
     export class User {
         private id?: number;
         private username: string;
         private password: string;
+        private role: Role;
         private profile?: Profile | null;
         private address?: Address | null;
         private wage?: Wage | null;
@@ -26,6 +28,7 @@
             id?: number;
             username: string;
             password: string;
+            role: Role;
             profile?: Profile | null;
             wage?: Wage | null;
             address?: Address | null;
@@ -34,6 +37,7 @@
             this.id = user.id;
             this.username = this.validateUserName(user.username);
             this.password = user.password;
+            this.role = user.role;
             this.profile = user.profile ?? null;
             this.wage = user.wage ?? null;
             this.address = user.address ?? null;
@@ -52,6 +56,9 @@
             return this.password;
         }
 
+        getRole(): Role {
+            return this.role;
+        }
 
         getProfile(): Profile | undefined | null  {
             return this.profile;
@@ -97,31 +104,32 @@
             }
             return name;
         }
-    
-    
 
         static from({
             id,
             username,
             password,
+            role,
             profile,
             wage,
             address,
-            animals
+            animals,
         }: usersPrisma & {
             profile: profilePrisma | null;
             address: addressPrisma | null;
             wage: wagePrisma | null;
             animals: animalsPrisma[];
-        }) {
+        }): User {
             return new User({
                 id,
                 username,
                 password,
-                profile: profile ? Profile.from(profile) : null, 
-                wage: wage ? Wage.from(wage) : null,  
+                role: role as Role, 
+                profile: profile ? Profile.from(profile) : null,
+                wage: wage ? Wage.from(wage) : null,
                 address: address ? Address.from(address) : null, 
-                animals: animals.map((animal) => Animal.from(animal)),
+                animals: Array.isArray(animals) ? animals.map(Animal.from) : [], 
             });
         }
+        
 }

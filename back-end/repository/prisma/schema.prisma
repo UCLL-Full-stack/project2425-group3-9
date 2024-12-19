@@ -11,15 +11,16 @@ model User {
   id          Int       @id @default(autoincrement())
   username    String    @unique
   password    String
+  role        String
   profile     Profile?
-  address     Address @relation(fields: [adressId], references: [id])
-  adressId    Int
+  address     Address? @relation(fields: [addressId], references: [id])
+  addressId   Int?
   wage        Wage?
   animals     Animal[]
 }
 
 model Profile {
-  id          Int       @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   email       String  @unique
   firstname   String
   lastname    String
@@ -59,6 +60,6 @@ model Animal {
   firstname String    @unique
   lastname  String
   age       Int
-  userId      Int    
-  user        User?   @relation(fields: [userId], references: [id])
+  userId    Int    
+  user      User?   @relation(fields: [userId], references: [id])
 }

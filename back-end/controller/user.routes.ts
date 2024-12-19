@@ -151,7 +151,61 @@ userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunc
     }
 });
 
-
+/**
+ * @swagger
+ * paths:
+ *   /login:
+ *     post:
+ *       tags:
+ *         - Users
+ *       summary: Authenticate a user and return a token or session details.
+ *       description: Validates user credentials and returns an authentication token or session details upon successful login.
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               required:
+ *                 - username
+ *                 - password
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   example: john_doe
+ *                   description: The username of the user.
+ *                 password:
+ *                   type: string
+ *                   format: password
+ *                   example: hashed_password_1
+ *                   description: The password of the user.
+ *       responses:
+ *         '200':
+ *           description: Successful authentication.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   message:
+ *                     type: string
+ *                     example: Authentication successful
+ *                   token:
+ *                     type: string
+ *                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                   user:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: number
+ *                         example: 1
+ *                       username:
+ *                         type: string
+ *                         example: john_doe
+ *                       email:
+ *                         type: string
+ *                         example: john@example.com
+ */
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const userInput: UserInput = req.body;
