@@ -1,12 +1,12 @@
-import { user } from '../../model/User';
-import { profile } from '../../model/Profile';
-import { workspace } from '../../model/Workspace';
-import { wage } from '../../model/Wage';
-import { address } from '../../model/Address';
+import { User } from '../../model/User';
+import { Profile } from '../../model/Profile';
+import { Workspace } from '../../model/Workspace';
+import { Wage } from '../../model/Wage';
+import { Address } from '../../model/Address';
 import userDb from '../../repository/user.db';
 import userService from '../../service/user.service';
 
-const profile1 = new profile({
+const profile1 = new Profile({
     email: 'janedoe@gmail.com',
     firstname: 'Jane',
     lastname: 'Doe',
@@ -14,18 +14,18 @@ const profile1 = new profile({
     phonenumber: '4756379812',
 });
 
-const workspace1 = new workspace({
+const workspace1 = new Workspace({
     name: 'LionResort',
 });
 
-const wage1 = new wage({
+const wage1 = new Wage({
     total: 2400,
     amount: 2000,
     seniority: 7,
     bonus: 400,
 });
 
-const address1 = new address({
+const address1 = new Address({
     street: 'Groenstraat 20',
     city: 'Leuven',
     state: 'Vlaams-Brabant',
@@ -33,7 +33,7 @@ const address1 = new address({
     country: 'Belgium',
 });
 
-const user1 = new user({
+const user1 = new User({
     id: 1,
     username: 'janedoe',
     password: 'securepassword123',

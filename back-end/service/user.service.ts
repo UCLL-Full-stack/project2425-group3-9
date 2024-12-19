@@ -17,6 +17,12 @@ const getUserById = async (id: number): Promise<User> => {
 
 const updateWage = async (id: number, newWage: WageInput ): Promise<Wage> => {
     try {
+        const wage = new Wage({
+            total: newWage.amount + newWage.bonus,
+            amount: newWage.amount,
+            seniority: newWage.seniority,
+            bonus: newWage.bonus
+        })
         const user =  await getUserById(id);
         const updatedWage = user.updateWage(newWage);
         return updatedWage; 

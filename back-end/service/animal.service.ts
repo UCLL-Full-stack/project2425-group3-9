@@ -2,9 +2,11 @@ import {Animal } from '../model/Animal';
 import animalDb from '../repository/animal.db';
 import { AnimalInput } from '../types';
 
-const getAllAnimals = async () : Promise<Animal[]> => {
+
+
+const getAllAnimals = async (): Promise<Animal[]> => {
     const animals = await animalDb.getAllAnimals();
-    return animals
+    return animals;
 };
 
 const getAnimalByName = async (name: string): Promise<Animal> => {

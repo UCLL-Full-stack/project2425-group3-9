@@ -1,12 +1,16 @@
 import {
     Workspace as workspacePrisma,
+    Profile as profilePrisma
 } from "@prisma/client"
+import { Profile } from "./Profile";
 
 export class Workspace {
     private name: string;
+    private profiles: Profile[]
 
-    constructor(workspace: { name: string }) {
+    constructor(workspace: { name: string, profiles: Profile[] }) {
         this.name = this.validateName(workspace.name);
+        this.profiles = workspace.profiles;
     }
 
     getName(): string {
@@ -23,9 +27,11 @@ export class Workspace {
         return name;
     }
 
-    static from({ name }: workspacePrisma) {
+    static from({ name, profiles }: workspacePrisma & {profiles: profilePrisma[]}) {
         return new Workspace({
-            name
+            name,
+            profiles: profiles.map((profile) => Profile.from(profile)),
+
         });
     }
 }
