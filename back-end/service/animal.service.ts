@@ -40,8 +40,6 @@ const deleteAnimal = async (animalname: string) : Promise<Animal | null> => {
     }
     const id = await getUserIdOfAnimalName(animalname);
     return animalDb.deleteAnimal(animal, id);
-
-
 }
 
 export default { getAllAnimals, getAnimalByName, addAnimal, deleteAnimal};

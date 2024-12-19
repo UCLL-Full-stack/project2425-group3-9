@@ -11,15 +11,16 @@ model User {
   id          Int       @id @default(autoincrement())
   username    String    @unique
   password    String
+  role        String
   profile     Profile?
-  address     Address? @relation(fields: [addressId], references: [id])
-  addressId    Int?
-  wage        Wage?
+  address     Address?  @relation(fields: [addressId], references: [id])
+  addressId   Int?
+  wage        Wage?    
   animals     Animal[]
 }
 
 model Profile {
-  id          Int       @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   email       String  @unique
   firstname   String
   lastname    String
@@ -27,7 +28,7 @@ model Profile {
   phonenumber String
   workspaces  Workspace[]
   userId      Int    @unique
-  user        User   @relation(fields: [userId], references: [id])
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Address {
@@ -47,18 +48,20 @@ model Workspace {
 }
 
 model Wage {
-  total       Float
-  amount      Float
-  seniority   Int
-  bonus       Float
-  userId      Int     @unique
-  user        User?   @relation(fields: [userId], references: [id])
+  id         Int    @id @default(autoincrement())
+  total      Int
+  amount     Int
+  seniority  Int
+  bonus      Int
+  userId     Int    @unique
+  user       User   @relation(fields: [userId], references: [id])
 }
 
 model Animal {
+  id          Int       @id @default(autoincrement())
   firstname String    @unique
   lastname  String
   age       Int
-  userId      Int    
-  user        User?   @relation(fields: [userId], references: [id])
+  userId    Int    
+  user      User?   @relation(fields: [userId], references: [id])
 }

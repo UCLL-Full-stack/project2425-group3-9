@@ -1,20 +1,43 @@
 import * as dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { userRouter } from './controller/user.routes';
 import { animalRouter } from './controller/animal.routes';
+import { expressjwt } from 'express-jwt';
 
 const app = express();
 dotenv.config();
-const port = process.env.APP_PORT || 3000;
 
+const port = Number(process.env.APP_PORT) || 3000;
 
+if (!process.env.JWT_SECRET) {
+    console.error('JWT_SECRET is not defined in environment variables.');
+    process.exit(1);  // Gracefully exit with an error code
+}
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET,
+        algorithms: ['HS256'],
+    }).unless({
+        path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/status', '/get_animals'],
+    })
+);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    if (err.name === 'UnauthorizedError') {
+        res.status(401).json({ status: 'unauthorized', message: err.message });
+    } else if (err.name === 'CoursesError') {
+        res.status(400).json({ status: 'domain error', message: err.message });
+    } else {
+        res.status(400).json({ status: 'application error', message: err.message });
+    }
+});
 
 app.use(cors({ origin: 'http://localhost:8080' }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Backend is running...' });
@@ -31,7 +54,6 @@ const swaggerOpts = {
     apis: ['./controller/*.routes.ts'],
 };
 
-
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -39,29 +61,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 app.use('/users', userRouter);
-
 app.use('/animals', animalRouter);
 
-
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(400).json({
-        status: 'application error',
-        message: err.message,
-    });
+app.listen(port, () => {
+    console.log(`Backend is running on port ${port}.`);
 });
-
-app.listen(port || 3000, () => {
-    console.log(`Backend is running on   port ${port}.`);
-});
-// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-//     if (err.name === 'UnauthorizedError') {
-//         res.status(401).json({ status: 'unauthorized', message: err.message });
-//     } else if (err.name === 'CoursesError') {
-//         res.status(400).json({ status: 'domain error', message: err.message });
-//     } else {
-//         res.status(400).json({ status: 'application error', message: err.message });
-//     }
-// });
 
 export default app;
-

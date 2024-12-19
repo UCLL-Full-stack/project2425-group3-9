@@ -1,7 +1,6 @@
 import { Profile as profilePrisma, 
     Workspace as workspacePrisma
 } from "@prisma/client"
-import { Workspace } from "./Workspace";
 
 export class Profile {
     private email: string;

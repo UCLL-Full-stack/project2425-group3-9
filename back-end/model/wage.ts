@@ -1,6 +1,7 @@
 import {  
     Wage as wagePrisma,
 } from "@prisma/client"
+import { WageInput } from "../types";
 
 export class Wage {
     private total: number;
@@ -81,6 +82,7 @@ export class Wage {
         }
         return number;
     }
+    
 
     static from({ total, amount, seniority, bonus }: wagePrisma) {
         return new Wage({
