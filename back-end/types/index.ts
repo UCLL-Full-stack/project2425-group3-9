@@ -29,6 +29,7 @@ type UserInput = {
     workspace: WorkspaceInput;
     wage: WageInput;
     address: AddressInput;
+    animals: AnimalInput[];
 };
 
 type AnimalInput = {

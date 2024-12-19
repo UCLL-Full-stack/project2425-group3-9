@@ -2,10 +2,9 @@ import {Animal } from '../model/Animal';
 import animalDb from '../repository/animal.db';
 import { AnimalInput } from '../types';
 
-
-
-const getAllAnimals = (): Promise<Animal[]> => {
-    return animalDb.getAllAnimals();
+const getAllAnimals = async () : Promise<Animal[]> => {
+    const animals = await animalDb.getAllAnimals();
+    return animals
 };
 
 const getAnimalByName = async (name: string): Promise<Animal> => {
@@ -39,8 +38,6 @@ const deleteAnimal = async (animalname: string) : Promise<Animal | null> => {
     }
     const id = await getUserIdOfAnimalName(animalname);
     return animalDb.deleteAnimal(animal, id);
-
-
 }
 
 export default { getAllAnimals, getAnimalByName, addAnimal, deleteAnimal};

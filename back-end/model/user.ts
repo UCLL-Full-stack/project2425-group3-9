@@ -142,8 +142,4 @@
                 animals: animals.map((animal) => Animal.from(animal)),
             });
         }
-        
-
-        
-        
-    }
+}
