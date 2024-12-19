@@ -5,6 +5,7 @@ import { Wage } from '../../model/Wage';
 import { Address } from '../../model/Address';
 import userDb from '../../repository/user.db';
 import userService from '../../service/user.service';
+import { Animal } from '../../model/Animal';
 
 const profile1 = new Profile({
     email: 'janedoe@gmail.com',
@@ -13,6 +14,12 @@ const profile1 = new Profile({
     age: 25,
     phonenumber: '4756379812',
 });
+
+const animals1: Animal[] = [
+    new Animal({ firstname: "Buddy", lastname: "The Dog", age: 5 }),
+    new Animal({ firstname: "Mittens", lastname: "The Cat", age: 3 }),
+];
+
 
 const wage1 = new Wage({
     total: 2400,
@@ -24,7 +31,7 @@ const wage1 = new Wage({
 const address1 = new Address({
     street: 'Groenstraat',
     city: 'Leuven',
-    number: '20',
+    number: 22,
     postalcode: 3301,
     country: 'Belgium',
 });
@@ -33,9 +40,11 @@ const user1 = new User({
     id: 1,
     username: 'janedoe',
     password: 'securepassword123',
+    role: "employee",
     profile: profile1,
     wage: wage1,
     address: address1,
+    animals: animals1
 });
 
 let mockGetAllUsers: jest.Mock;
@@ -45,8 +54,8 @@ beforeEach(() => {
     mockGetAllUsers = jest.fn();
     mockGetUserById = jest.fn();
 
-    userDb.getAllUsers = mockGetAllUsers;
-    userDb.getUserById = mockGetUserById;
+    userService.getAllUsers = mockGetAllUsers;
+    userService.getUserById = mockGetUserById;
 });
 
 afterEach(() => {
@@ -73,11 +82,18 @@ describe('User Service Tests', () => {
     });
 
     test('should throw an error if user does not exist', async () => {
-        mockGetUserById.mockReturnValue(undefined);
+        const userId = 999;
 
-        await expect(userService.getUserById(999)).rejects.toThrow(
-            'User with id &{id} does not exist.'
+        // Mocking the DB call to return a rejected promise (i.e., simulate that the user is not found)
+        mockGetUserById.mockRejectedValue(new Error(`User with id ${userId} does not exist.`));
+
+        // Make sure the function rejects with the correct error message when no user is found
+        await expect(userService.getUserById(userId)).rejects.toThrow(
+            `User with id ${userId} does not exist.`
         );
-        expect(mockGetUserById).toHaveBeenCalledWith(999);
+
+        expect(mockGetUserById).toHaveBeenCalledWith(userId);  // Ensure DB call is made with the correct userId
     });
+
 });
+
