@@ -12,8 +12,8 @@ model User {
   username    String    @unique
   password    String
   profile     Profile?
-  address     Address @relation(fields: [adressId], references: [id])
-  adressId    Int
+  address     Address? @relation(fields: [addressId], references: [id])
+  addressId    Int?
   wage        Wage?
   animals     Animal[]
 }

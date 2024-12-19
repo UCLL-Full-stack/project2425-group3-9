@@ -13,10 +13,6 @@ const testProfile = new Profile({
     phonenumber: '123-456-7890',
 });
 
-const testWorkspace = new Workspace({
-    name: 'Apenresort',
-});
-
 const testWage = new Wage({
     total: 23000,
     amount: 2000,
@@ -27,7 +23,7 @@ const testWage = new Wage({
 const testAddress = new Address({
     street: '456 Elm St',
     city: 'Othertown',
-    number: 'NY',
+    number: 125,
     postalcode: 54321,
     country: 'USA',
 });
@@ -36,9 +32,7 @@ const testUser = new User({
     id: 1,
     username: 'testuser',
     password: 'password123',
-    admin: false,
     profile: testProfile,
-    workspace: testWorkspace,
     wage: testWage,
     address: testAddress,
     animals: []
@@ -48,9 +42,7 @@ test('should create a user with the provided properties', () => {
     expect(testUser.getId()).toBe(1);
     expect(testUser.getUsername()).toBe('testuser');
     expect(testUser.getPassword()).toBe('password123');
-    expect(testUser.isAdmin()).toBe(false);
     expect(testUser.getProfile()).toBe(testProfile);
-    expect(testUser.getWorkspace()).toBe(testWorkspace);
     expect(testUser.getWage()).toBe(testWage);
     expect(testUser.getAddress()).toBe(testAddress);
 });
@@ -59,9 +51,7 @@ test('should return undefined for id if not set', () => {
     const userWithoutId = new User({
         username: 'userWithoutId',
         password: 'password123',
-        admin: false,
         profile: testProfile,
-        workspace: testWorkspace,
         wage: testWage,
         address: testAddress,
         animals: []
@@ -69,34 +59,6 @@ test('should return undefined for id if not set', () => {
     expect(userWithoutId.getId()).toBeUndefined();
 });
 
-test('should indicate if a user is an admin', () => {
-    const adminUser = new User({
-        id: 2,
-        username: 'adminuser',
-        password: 'adminpass',
-        admin: true,
-        profile: testProfile,
-        workspace: testWorkspace,
-        wage: testWage,
-        address: testAddress,
-        animals: []
-    });
-    expect(adminUser.isAdmin()).toBe(true);
-});
-
-test('should not be an admin by default', () => {
-    const regularUser = new User({
-        username: 'regularuser',
-        password: 'userpass',
-        admin: false,
-        profile: testProfile,
-        workspace: testWorkspace,
-        wage: testWage,
-        address: testAddress,
-        animals: []
-    });
-    expect(regularUser.isAdmin()).toBe(false);
-});
 
 test('should return the correct profile', () => {
     expect(testUser.getProfile()).toEqual(testProfile);
@@ -107,10 +69,6 @@ test('should return the correct profile', () => {
     expect(testUser.getProfile().getPhonenumber()).toBe('123-456-7890');
 });
 
-test('should return the correct workspace', () => {
-    expect(testUser.getWorkspace()).toEqual(testWorkspace);
-    expect(testUser.getWorkspace().getName()).toBe('Apenresort');
-});
 
 test('should return the correct wage', () => {
     expect(testUser.getWage()).toEqual(testWage);
@@ -124,7 +82,7 @@ test('should return the correct address', () => {
     expect(testUser.getAddress()).toEqual(testAddress);
     expect(testUser.getAddress().getStreet()).toBe('456 Elm St');
     expect(testUser.getAddress().getCity()).toBe('Othertown');
-    expect(testUser.getAddress().getState()).toBe('NY');
+    expect(testUser.getAddress().getNumber()).toBe(125);
     expect(testUser.getAddress().getPostalcode()).toBe(54321);
     expect(testUser.getAddress().getCountry()).toBe('USA');
 });

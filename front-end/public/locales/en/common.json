@@ -1,0 +1,8 @@
+{
+    "app.welcome": "Welcome!",
+    "header": {
+        "animals": "animals",
+        "users": "users",
+        "employees": "employees"
+    }
+}

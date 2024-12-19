@@ -14,10 +14,6 @@ const profile1 = new Profile({
     phonenumber: '4756379812',
 });
 
-const workspace1 = new Workspace({
-    name: 'LionResort',
-});
-
 const wage1 = new Wage({
     total: 2400,
     amount: 2000,
@@ -26,9 +22,9 @@ const wage1 = new Wage({
 });
 
 const address1 = new Address({
-    street: 'Groenstraat 20',
+    street: 'Groenstraat',
     city: 'Leuven',
-    state: 'Vlaams-Brabant',
+    number: '20',
     postalcode: 3301,
     country: 'Belgium',
 });
@@ -37,9 +33,7 @@ const user1 = new User({
     id: 1,
     username: 'janedoe',
     password: 'securepassword123',
-    admin: true,
     profile: profile1,
-    workspace: workspace1,
     wage: wage1,
     address: address1,
 });

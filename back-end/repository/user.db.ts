@@ -36,6 +36,23 @@ const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
+
+const getUserByUsername = async ({username}: {username: string}) : Promise<User> => {
+    const userPrisma = await database.user.findUnique({
+        where: { username },
+        include: {
+            profile: true,
+            wage: true,
+            address: true,
+            animals: true,
+        },
+    });
+    if (userPrisma === null) {
+        throw new Error(`No user found with username ${username}`);
+    }
+    return User.from(userPrisma);
+};
+
 // const getUserByUsername = async (username: string) : Promise<User> => {
 //     const userPrisma = await database.user.findUnique({
 //         where: { username },
@@ -67,6 +84,6 @@ const getAllUsers = async (): Promise<User[]> => {
 export default {
     getAllUsers,
     getUserById,
-    // getUserByUsername,
-    // generateJwtToken,
+    getUserByUsername,
+    
 };

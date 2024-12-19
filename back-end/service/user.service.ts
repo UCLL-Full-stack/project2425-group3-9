@@ -31,24 +31,11 @@ const updateWage = async (id: number, newWage: WageInput ): Promise<Wage> => {
     }
 }
 
-// const authenticate = async ({ username, password }: UserInput): Promise<AuthenticationResponse> => {
-//     const user = await userDb.getUserByUsername({ username });
-
-//     const isValidPassword = await bcrypt.compare(password, user.getPassword());
-
-//     if (!isValidPassword) {
-//         throw new Error('Incorrect password.');
-//     }
-//     return {
-//         token: generateJwtToken({ username }),
-//         username: username,
-//     };
-// };
 
 export default { 
     getAllUsers, 
     getUserById, 
     updateWage, 
-    // authenticate 
+    
 };
 
