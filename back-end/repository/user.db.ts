@@ -40,8 +40,8 @@ const getAllUsers = async (): Promise<User[]> => {
     }
 };
 
-const getUserByUsername = async ({username}: {username: string}) : Promise<User> => {
-    const userPrisma = await database.user.findUnique({
+const existsUser = async ({username}: {username: string}) : Promise<boolean> => {
+    const userPrisma = await database.user.findFirst({
         where: { username },
         include: {
             profile: true,
@@ -50,10 +50,28 @@ const getUserByUsername = async ({username}: {username: string}) : Promise<User>
             animals: true,
         },
     });
-    if (userPrisma === null) {
-        throw new Error(`No user found with username ${username}`);
+    if (userPrisma){
+        return true
     }
-    return User.from(userPrisma);
+    return false
+}
+
+
+
+const getUserByUsername = async ({username}: {username: string}) : Promise<User> => {
+    const userPrisma = await database.user.findFirst({
+        where: { username },
+        include: {
+            profile: true,
+            wage: true,
+            address: true,
+            animals: true,
+        },
+    });
+    if (!userPrisma){
+        throw new Error(`user not found ${username}`)
+    }
+    return  User.from(userPrisma);
 };
 
 
@@ -106,4 +124,5 @@ export default {
     getUserById,
     getUserByUsername,
     createUser,
+    existsUser,
 };

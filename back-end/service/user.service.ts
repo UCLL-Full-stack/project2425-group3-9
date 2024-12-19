@@ -70,7 +70,7 @@ const createUser = async ({
     password,
     role,
 }: UserInput): Promise<User> => {
-    const existingUser = await userDb.getUserByUsername({username});
+    const existingUser = await userDb.existsUser({username});
     if (existingUser) {
         throw new Error(`User with username ${username} is already registered.`);
     }
