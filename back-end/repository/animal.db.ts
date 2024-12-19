@@ -4,12 +4,12 @@ import userDb from "./user.db"
 import database from "../util/database"
 
 
-const addAnimal = async (newAnimal: AnimalInput, userid : number): Promise<Animal> => {
+const addAnimal = async (animal: Animal, userid : number): Promise<Animal> => {
     const addedAnimal = await database.animal.create({
         data: {
-            firstname: newAnimal.firstname,
-            lastname: newAnimal.lastname,
-            age: newAnimal.age,
+            firstname: animal.getFirstname(),
+            lastname: animal.getLastname(),
+            age: animal.getAge(),
             userId: userid,
         },
     });

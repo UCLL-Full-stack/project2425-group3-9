@@ -27,7 +27,7 @@ const testWage = new Wage({
 const testAddress = new Address({
     street: '456 Elm St',
     city: 'Othertown',
-    state: 'NY',
+    number: 'NY',
     postalcode: 54321,
     country: 'USA',
 });

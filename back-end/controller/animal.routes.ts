@@ -43,7 +43,7 @@ export { animalRouter };
  */
 animalRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const animals = animalService.getAllAnimals();
+        const animals = await animalService.getAllAnimals();
         res.status(200).json(animals);
     } catch (error) {
         next(error);
@@ -90,12 +90,7 @@ animalRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
 animalRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { firstname, lastname, age, userid } = req.body;
-
-        if (!firstname || !lastname || typeof age !== 'number') {
-            return res.status(400).json({ error: 'Invalid data provided' });
-        }
-
-        const newAnimal = animalService.addAnimal({ firstname, lastname, age }, userid);
+        const newAnimal = await animalService.addAnimal( {firstname, lastname, age} , userid);
         res.status(200).json(newAnimal);
     } catch (error) {
         next(error);
@@ -127,15 +122,15 @@ animalRouter.delete('/:firstname', async (req: Request, res: Response, next: Nex
     try {
         const { firstname } = req.params;
 
-        if (!firstname) {
-            return res.status(400).json({ error: 'Firstname is required.' });
-        }
+        // if (!firstname) {
+        //     return res.status(400).json({ error: 'Firstname is required.' });
+        // }
 
-        const deletedAnimal = animalService.deleteAnimal(firstname);
+        await animalService.deleteAnimal(firstname);
 
-        if (!deletedAnimal) {
-            return res.status(404).json({ error: 'Animal not found.' });
-        }
+        // if (!deletedAnimal) {
+        //     return res.status(404).json({ error: 'Animal not found.' });
+        // }
 
         res.status(200).json({ message: `Animal with firstname '${firstname}' successfully deleted.` });
     } catch (error) {

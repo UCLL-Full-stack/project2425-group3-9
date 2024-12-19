@@ -13,18 +13,15 @@ const getAnimalByName = async (name: string): Promise<Animal> => {
     return animal;
 };
 
-const addAnimal = (animalType: AnimalInput, userid : number): Promise<Animal> => {
-    if (!animalType.firstname || typeof animalType.firstname !== 'string' || animalType.firstname.trim() === '') {
-        throw new Error('Invalid firstname: must be a non-empty string.');
-    }
-    if (!animalType.lastname || typeof animalType.lastname !== 'string' || animalType.lastname.trim() === '') {
-        throw new Error('Invalid lastname: must be a non-empty string.');
-    }
+const addAnimal = async ({firstname, lastname, age} : AnimalInput, userid : number): Promise<Animal> => {
+    const animal = new Animal({firstname, lastname, age})
+    const alreadyExistingAnimal = await getAnimalByName(animal.getFirstname());
 
-    if (typeof animalType.age !== 'number' || animalType.age < 0) {
-        throw new Error('Invalid age: must be a non-negative number.');
+    if (alreadyExistingAnimal) {
+        throw new Error(`Animal with name ${animal.getFirstname()} already exists!`);
     }
-    return animalDb.addAnimal(animalType, userid);
+    const addedAnimal = await animalDb.addAnimal(animal, userid);
+    return addedAnimal;
 };
 
 const getUserIdOfAnimalName = async (animalname: string) : Promise<number> => {

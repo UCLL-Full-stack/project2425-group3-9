@@ -6,11 +6,21 @@ export class Workspace {
     private name: string;
 
     constructor(workspace: { name: string }) {
-        this.name = workspace.name;
+        this.name = this.validateName(workspace.name);
     }
 
     getName(): string {
         return this.name;
+    }
+
+    validateName(name: string): string {
+        if (name.trim() === "") {
+            throw new Error("Name cannot be empty!")
+        }
+        if (name === null) {
+            throw new Error("Name cannot be null!")
+        }
+        return name;
     }
 
     static from({ name }: workspacePrisma) {

@@ -4,7 +4,7 @@ import database from "../util/database";
 import { Wage } from "../model/Wage";
 // import bcrypt from "bcrypt";
 
-const getUserById = async (id: number) : Promise<User> => {
+const getUserById = async (id: number): Promise<User> => {
     const userPrisma = await database.user.findUnique({
         where: { id },
         include: {
@@ -29,7 +29,7 @@ const getAllUsers = async (): Promise<User[]> => {
                 workspace: true,
                 wage: true,
                 address: true,
-                animals: true   
+                animals: true
             },
         });
         return usersPrisma.map((userPrisma) => User.from(userPrisma));

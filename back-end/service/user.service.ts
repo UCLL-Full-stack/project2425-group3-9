@@ -4,15 +4,13 @@ import userDb from '../repository/user.db';
 import { UserInput, WageInput } from '../types';
 // import bcrypt from "bcrypt";
 
-// const getAllUsers = async (): Promise<user[]> => userDb.getAllUsers();
-
-const getAllUsers = (): Promise<User[]> => {
-    const users = userDb.getAllUsers();
+const getAllUsers = async (): Promise<User[]> => {
+    const users = await userDb.getAllUsers();
     return users;
 };
 
 const getUserById = async (id: number): Promise<User> => {
-    const user = userDb.getUserById(id);
+    const user = await userDb.getUserById(id);
     if (!user) throw new Error(`User with id ${id} does not exist.`);
     return user;
 };

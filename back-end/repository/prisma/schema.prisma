@@ -32,7 +32,7 @@ model Profile {
 model Address {
   street      String
   city        String
-  state       String
+  number      Int
   postalcode  Int
   country     String
   userId      Int     @unique
@@ -58,6 +58,6 @@ model Animal {
   firstname String    @unique
   lastname  String
   age       Int
-  userId      Int    @unique
+  userId      Int    
   user        User?   @relation(fields: [userId], references: [id])
 }
