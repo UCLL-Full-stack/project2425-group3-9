@@ -47,8 +47,6 @@ export const updateWage = async (
                 total: wage.getTotal(),
             },
         });
-
-        // Return the updated Wage object
         return Wage.from(updatedWage);
 };
 
@@ -77,7 +75,7 @@ const createUser = async ({
         throw new Error(`User with username ${username} is already registered.`);
     }
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = new User ({username, password: hashedPassword, role, profile: undefined, wage: undefined, address: undefined, animals: []});
+    const user = new User ({username, password: hashedPassword, role, profile: null, wage: null, address: null, animals: []});
     return await userDb.createUser(user);
 };
 

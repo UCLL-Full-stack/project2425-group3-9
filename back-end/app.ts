@@ -14,7 +14,7 @@ const port = Number(process.env.APP_PORT) || 3000;
 
 if (!process.env.JWT_SECRET) {
     console.error('JWT_SECRET is not defined in environment variables.');
-    process.exit(1);  // Gracefully exit with an error code
+    process.exit(1); 
 }
 
 app.use(
@@ -22,7 +22,7 @@ app.use(
         secret: process.env.JWT_SECRET,
         algorithms: ['HS256'],
     }).unless({
-        path: ['/api-docs', /^\/api-docs\/.*/, '/status', '/animals', '/users', '/users/login', '/login'],
+        path: ['/api-docs', /^\/api-docs\/.*/, '/status', '/animals', '/users', '/users/login', '/login', '/users/signup'],
     })
 );
 

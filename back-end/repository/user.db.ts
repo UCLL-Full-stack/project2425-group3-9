@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import { UserInput } from "../types";
 import { parseISOWithOptions } from "date-fns/fp";
+import { error } from "console";
 
 const getUserById = async (id: number): Promise<User> => {
     const userPrisma = await database.user.findUnique({

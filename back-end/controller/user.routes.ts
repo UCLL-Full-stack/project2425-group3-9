@@ -206,56 +206,47 @@ userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunc
  *                       email:
  *                         type: string
  *                         example: john@example.com
- *         '400':
- *           description: Invalid login credentials.
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   status:
- *                     type: string
- *                     example: "error"
- *                   message:
- *                     type: string
- *                     example: "Incorrect username or password."
- *         '401':
- *           description: Unauthorized (e.g., Missing Token or Invalid Token).
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   status:
- *                     type: string
- *                     example: "unauthorized"
- *                   message:
- *                     type: string
- *                     example: "No authorization token was found"
- *         '500':
- *           description: Server error or unexpected issue.
- *           content:
- *             application/json:
- *               schema:
- *                 type: object
- *                 properties:
- *                   status:
- *                     type: string
- *                     example: "error"
- *                   message:
- *                     type: string
- *                     example: "An error occurred during authentication."
- */
+*/
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const userInput = <UserInput>req.body;
         const response = await userService.authenticate(userInput);
         res.status(200).json({
             message: 'Authentication successful',
-            token: response.token,  // Send the token back to the client
-            username: response.username,  // You might want to send back the username too
+            token: response.token,
+            username: response.username,  
         });
         } catch (error) {
         next(error);
+    }
+});
+
+
+/**
+ * @swagger
+ * /users/signup:
+ *   post:
+ *     summary: Create a user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserInput'
+ *     responses:
+ *       200:
+ *         description: The created user object
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ */
+userRouter.post('/signup', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userInput: UserInput = req.body; 
+      const user = await userService.createUser(userInput);
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);  
     }
 });
