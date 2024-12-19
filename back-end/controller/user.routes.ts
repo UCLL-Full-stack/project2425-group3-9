@@ -177,7 +177,7 @@ userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunc
  *                 password:
  *                   type: string
  *                   format: password
- *                   example: hashed_password_1
+ *                   example: John123
  *                   description: The password of the user.
  *       responses:
  *         '200':
@@ -205,13 +205,56 @@ userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunc
  *                       email:
  *                         type: string
  *                         example: john@example.com
+ *         '400':
+ *           description: Invalid login credentials.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   status:
+ *                     type: string
+ *                     example: "error"
+ *                   message:
+ *                     type: string
+ *                     example: "Incorrect username or password."
+ *         '401':
+ *           description: Unauthorized (e.g., Missing Token or Invalid Token).
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   status:
+ *                     type: string
+ *                     example: "unauthorized"
+ *                   message:
+ *                     type: string
+ *                     example: "No authorization token was found"
+ *         '500':
+ *           description: Server error or unexpected issue.
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 type: object
+ *                 properties:
+ *                   status:
+ *                     type: string
+ *                     example: "error"
+ *                   message:
+ *                     type: string
+ *                     example: "An error occurred during authentication."
  */
 userRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => { 
     try {
-        const userInput: UserInput = req.body;
+        const userInput = <UserInput>req.body;
         const response = await userService.authenticate(userInput);
-        res.status(200).json({ message: 'Authentication succesful', ...response }); 
-    } catch (error) {
+        res.status(200).json({
+            message: 'Authentication successful',
+            token: response.token,  // Send the token back to the client
+            username: response.username,  // You might want to send back the username too
+        });
+        } catch (error) {
         next(error);
     }
 });

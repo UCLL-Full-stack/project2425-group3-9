@@ -1,15 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 async function main() {
   
+  await prisma.profile.deleteMany();
   await prisma.wage.deleteMany();
-  await prisma.workspace.deleteMany();
-  await prisma.address.deleteMany();
   await prisma.animal.deleteMany();
+  await prisma.address.deleteMany();
   await prisma.user.deleteMany();
-
   
   const address1 = await prisma.address.create({
     data: {
@@ -21,14 +21,15 @@ async function main() {
     },
   });
 
-  
+    const hashedPassword1 = await bcrypt.hash("John123", 12);
+
   const user1 = await prisma.user.create({
     data: {
       username: 'john_doe',
-      password: 'hashed_password_1',
+      password: hashedPassword1,
       role: "admin",
       address: {
-        connect: { id: address1.id}
+        connect: { id: address1.id }
       },
       profile: {
         create: {
@@ -66,6 +67,7 @@ async function main() {
     },
   });
 
+  
   const address2 = await prisma.address.create({
     data: {
       street: '123 Main St',
@@ -75,14 +77,15 @@ async function main() {
       country: 'USA',
     },
   });
-  
+  const hashedPassword2 = await bcrypt.hash("Jane123", 12);
+
   const user2 = await prisma.user.create({
     data: {
       username: 'jane_doe',
-      password: 'hashed_password_2',
+      password: hashedPassword2,
       role: "admin",
       address: {
-        connect: {id: address2.id}
+        connect: { id: address2.id }
       },
       profile: {
         create: {

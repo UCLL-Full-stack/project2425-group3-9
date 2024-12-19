@@ -13,9 +13,9 @@ model User {
   password    String
   role        String
   profile     Profile?
-  address     Address? @relation(fields: [addressId], references: [id])
+  address     Address?  @relation(fields: [addressId], references: [id])
   addressId   Int?
-  wage        Wage?
+  wage        Wage?    
   animals     Animal[]
 }
 
@@ -28,7 +28,7 @@ model Profile {
   phonenumber String
   workspaces  Workspace[]
   userId      Int    @unique
-  user        User   @relation(fields: [userId], references: [id])
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Address {
@@ -48,15 +48,17 @@ model Workspace {
 }
 
 model Wage {
-  total       Float
-  amount      Float
-  seniority   Int
-  bonus       Float
-  userId      Int     @unique
-  user        User?   @relation(fields: [userId], references: [id])
+  id         Int    @id @default(autoincrement())
+  total      Int
+  amount     Int
+  seniority  Int
+  bonus      Int
+  userId     Int    @unique
+  user       User   @relation(fields: [userId], references: [id])
 }
 
 model Animal {
+  id          Int       @id @default(autoincrement())
   firstname String    @unique
   lastname  String
   age       Int
