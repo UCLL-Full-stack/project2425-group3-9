@@ -41,8 +41,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
 import { UserInput } from '../types';
-import { UserInput } from '../types';
-//import { UserInput } from '../types';
+
 
 const userRouter = express.Router();
 
@@ -156,7 +155,7 @@ userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunc
 /**
  * @swagger
  * paths:
- *   /login:
+ *   /users/login:
  *     post:
  *       tags:
  *         - Users
