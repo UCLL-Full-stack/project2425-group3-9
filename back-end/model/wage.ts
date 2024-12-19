@@ -9,11 +9,12 @@ export class Wage {
     private bonus: number;
 
     constructor(wage: { total: number; amount: number; seniority: number; bonus: number }) {
-        this.total = wage.total;
-        this.amount = wage.amount;
-        this.seniority = wage.seniority;
-        this.bonus = wage.bonus;
+        this.total = this.validateTotal(wage.total);
+        this.amount = this.validateAmount(wage.amount);
+        this.seniority = this.validateSeniority(wage.seniority);
+        this.bonus = this.validateBonus(wage.bonus);
     }
+    
 
     countAndSetTotal(): number {
         const total = this.amount + this.bonus;
@@ -52,6 +53,35 @@ export class Wage {
     getBonus(): number {
         return this.bonus;
     }
+
+    validateTotal (number: number) : number {
+        if (number <= 0) {
+            throw new Error("Total cannot be negative!")
+        }
+        return number;
+    }
+
+    validateAmount (number: number) : number {
+        if (number <= 0) {
+            throw new Error("Amount cannot be negative!")
+        }
+        return number;
+    }
+
+    validateSeniority (number: number) : number {
+        if (number <= 0) {
+            throw new Error("Seniority cannot be negative!")
+        }
+        return number;
+    }
+
+    validateBonus (number: number) : number {
+        if (number <= 0) {
+            throw new Error("Bonus cannot be negative!")
+        }
+        return number;
+    }
+
     static from({ total, amount, seniority, bonus }: wagePrisma) {
         return new Wage({
             total,

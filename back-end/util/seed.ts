@@ -29,7 +29,7 @@ async function main() {
                 create: {
                     street: '123 Main St',
                     city: 'New York',
-                    state: 'NY',
+                    number: 2,
                     postalcode: 10001,
                     country: 'USA',
                 },
@@ -77,7 +77,7 @@ async function main() {
                 create: {
                     street: '456 Elm St',
                     city: 'San Francisco',
-                    state: 'CA',
+                    number: 134,
                     postalcode: 94105,
                     country: 'USA',
                 },

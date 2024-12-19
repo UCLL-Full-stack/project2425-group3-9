@@ -61,13 +61,13 @@ export { userRouter };
  *               items:
  *                 $ref: '#/components/users'
  */
-userRouter.get('/', async (req: Request, res: Response) => {
-    // try {
-    const users = userService.getAllUsers();
-    res.status(200).json(users);
-    // } catch (error) {
-    //     res.status(400).json({ status: "error", errorMessage: error.message});
-    // }
+userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const users = await userService.getAllUsers();
+        res.status(200).json(users);
+    } catch (error) {
+        next(error);
+    }
 });
 
 /**
@@ -92,9 +92,13 @@ userRouter.get('/', async (req: Request, res: Response) => {
  */
 
 userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
-    const id = parseInt(req.params.id, 10);
-    const user = await userService.getUserById(id);
-    res.status(200).json(user);
+    try {
+        const id = parseInt(req.params.id);
+        const user = await userService.getUserById(id);
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
 });
 
 /**

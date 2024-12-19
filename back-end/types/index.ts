@@ -1,7 +1,7 @@
 type AddressInput = {
     street: string;
     city: string;
-    state: string;
+    number: number;
     postalCode: number;
     country: string;
 };

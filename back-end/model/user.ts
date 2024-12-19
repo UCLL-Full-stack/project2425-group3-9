@@ -13,40 +13,6 @@
     import { Wage } from './Wage';
     import { Animal } from './Animal';
 
-
-    // export class User {
-    //     private id?: number;
-    //     private username: string;
-    //     private password: string;
-    //     private admin: boolean;
-    //     private profile?: Profile  ;
-    //     private address?: Address  ;
-    //     private workspace?: Workspace ;
-    //     private wage?: Wage ;
-    //     private animals?: Animal[] ;
-
-    //     constructor(user: {
-    //         id?: number;
-    //         username: string;
-    //         password: string;
-    //         admin: boolean;
-    //         profile: Profile;
-    //         workspace: Workspace;
-    //         wage: Wage;
-    //         address: Address;
-    //         animals: Animal[]
-    //     }) {
-    //         this.id = user.id;
-    //         this.username = user.username;
-    //         this.password = user.password;
-    //         this.admin = user.admin;
-    //         this.profile = user.profile;
-    //         this.workspace = user.workspace;
-    //         this.wage = user.wage;
-    //         this.address = user.address;
-    //         this.animals = [];
-    //     }
-
     export class User {
         private id?: number;
         private username: string;
@@ -63,21 +29,21 @@
             username: string;
             password: string;
             admin: boolean;
-            profile?: Profile | null;  // Optioneel, kan null zijn
-            workspace?: Workspace | null;  // Optioneel, kan null zijn
-            wage?: Wage | null;  // Optioneel, kan null zijn
-            address?: Address | null;  // Optioneel, kan null zijn
+            profile?: Profile | null;
+            workspace?: Workspace | null;
+            wage?: Wage | null;
+            address?: Address | null;
             animals: Animal[];
         }) {
             this.id = user.id;
-            this.username = user.username;
+            this.username = this.validateUserName(user.username);
             this.password = user.password;
             this.admin = user.admin;
-            this.profile = user.profile ?? null; // Als er geen profiel is, maak het null
+            this.profile = user.profile ?? null;
             this.workspace = user.workspace ?? null;
             this.wage = user.wage ?? null;
             this.address = user.address ?? null;
-            this.animals = user.animals ?? []; // Zorg ervoor dat animals altijd een array is
+            this.animals = user.animals ?? [];
         }
 
         getId(): number | undefined {
@@ -135,36 +101,17 @@
             return addedAnimal;
         } 
 
-        // static from({
-        //     id,
-        //     username,
-        //     password,
-        //     admin,
-        //     profile,
-        //     workspace,
-        //     wage,
-        //     address,
-        //     animals
-        // }: usersPrisma & {
-        //     profile: profilePrisma;
-        //     workspace: workspacePrisma;
-        //     address: addressPrisma;
-        //     wage: wagePrisma;
-        //     animals: animalsPrisma[];
-        // }) {
-        //     return new User({
-        //         id,
-        //         username,
-        //         password,
-        //         admin,
-        //         profile: Profile.from(profile), 
-        //         workspace: Workspace.from(workspace), 
-        //         wage: Wage.from(wage), 
-        //         address: Address.from(address),
-        //         animals: animals.map((animal) => Animal.from(animal)),
-        //     });
-
-        // }
+        validateUserName(name: string): string {
+            if (name.trim() === "") {
+                throw new Error("Username cannot be empty!")
+            }
+            if (name === null) {
+                throw new Error("Userame cannot be null!")
+            }
+            return name;
+        }
+    
+    
 
         static from({
             id,
@@ -177,10 +124,10 @@
             address,
             animals
         }: usersPrisma & {
-            profile: profilePrisma | null;  // Het profiel kan null zijn
-            workspace: workspacePrisma | null;  // Werkplek kan null zijn
-            address: addressPrisma | null;  // Adres kan null zijn
-            wage: wagePrisma | null;  // Loon kan null zijn
+            profile: profilePrisma | null;
+            workspace: workspacePrisma | null; 
+            address: addressPrisma | null;
+            wage: wagePrisma | null;
             animals: animalsPrisma[];
         }) {
             return new User({
@@ -188,10 +135,10 @@
                 username,
                 password,
                 admin,
-                profile: profile ? Profile.from(profile) : null,  // Profile kan null zijn
-                workspace: workspace ? Workspace.from(workspace) : null,  // Werkplek kan null zijn
-                wage: wage ? Wage.from(wage) : null,  // Loon kan null zijn
-                address: address ? Address.from(address) : null,  // Adres kan null zijn
+                profile: profile ? Profile.from(profile) : null,  
+                workspace: workspace ? Workspace.from(workspace) : null, 
+                wage: wage ? Wage.from(wage) : null,  
+                address: address ? Address.from(address) : null, 
                 animals: animals.map((animal) => Animal.from(animal)),
             });
         }

@@ -3,7 +3,7 @@ import { Address } from '../../model/Address'; // Update with the actual path
 const testAddress = new Address({
     street: '123 Main St',
     city: 'Anytown',
-    state: 'CA',
+    number: 'CA',
     postalcode: 12345,
     country: 'USA',
 });

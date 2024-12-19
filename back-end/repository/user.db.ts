@@ -4,7 +4,7 @@ import database from "../util/database";
 
 
 
-const getUserById = async (id: number) : Promise<User> => {
+const getUserById = async (id: number): Promise<User> => {
     const userPrisma = await database.user.findUnique({
         where: { id },
         include: {
@@ -21,19 +21,6 @@ const getUserById = async (id: number) : Promise<User> => {
     return User.from(userPrisma);
 };
 
-// const getAllUsers = async (): Promise<User[]> => {
-//     const usersPrismas = await database.user.findMany({
-//         include: {
-//             profile: true,
-//             workspace: true,
-//             wage: true,
-//             address: true,
-//             animals: true,
-//         },
-//     });
-//     return usersPrismas.map((user) => User.from(user));
-// };
-
 const getAllUsers = async (): Promise<User[]> => {
     try {
         const usersPrisma = await database.user.findMany({
@@ -42,7 +29,7 @@ const getAllUsers = async (): Promise<User[]> => {
                 workspace: true,
                 wage: true,
                 address: true,
-                animals: true   
+                animals: true
             },
         });
         return usersPrisma.map((userPrisma) => User.from(userPrisma));
