@@ -3,6 +3,7 @@ type Role = "admin" | "caretaker" | "employee";
 type AuthenticationResponse = {
     token: string;
     username: string;
+    role: Role;
 }
 
 type AddressInput = {

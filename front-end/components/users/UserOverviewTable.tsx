@@ -18,7 +18,7 @@ const UserOverviewTable: React.FC<Props> = ({
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Age</th>
-              <th scope="col">Workspace</th>
+              {/* <th scope="col">Workspace</th> */}
             </tr>
           </thead>
           <tbody>
@@ -28,9 +28,14 @@ const UserOverviewTable: React.FC<Props> = ({
                 onClick={() => selectUser(user)}
                 role="button"
               >
-                <td>{user.profile.firstname + " " + user.profile.lastname}</td>
-                <td>{user.profile.age}</td>
-                <td>{user.workspace.name}</td>
+                {user.profile ? (
+                  <>
+                    <td>{user.profile.firstname + " " + user.profile.lastname}</td>
+                    <td>{user.profile.age}</td>
+                </>
+               ) : (
+                <td colSpan={2}>No profile available</td>
+              )}
               </tr>
             ))}
           </tbody>

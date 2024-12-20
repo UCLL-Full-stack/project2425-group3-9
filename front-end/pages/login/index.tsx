@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Header from '@components/header';
 import Link from 'next/link';
 import styles from '@styles/home.module.css';
+import UserLoginForm from '@components/users/UserLoginForm';
 
 
 const Login: React.FC = () => {
@@ -21,13 +22,7 @@ const Login: React.FC = () => {
           </span>
   
           <div className={styles.description}>
-            <p>
-                bezig aan login pagina
-              {/* Courses lets you see as a lecturer all the courses you are teaching
-              and as a student all the courses you are enrolled in. <br />
-              You can also see when the courses are scheduled and the students
-              enrolled in each course. */}
-            </p>
+              <UserLoginForm/>
           </div>
         </main>
       </>

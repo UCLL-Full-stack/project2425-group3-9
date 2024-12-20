@@ -36,13 +36,16 @@ export type workspace = {
 };
 
 export type user = {
-    id: number;
-    username: string;
-    password: string;
-    admin: boolean;
-    profile: profile;
-    address: address;
-    workspace: workspace;
-    wage: wage;
-    animals: animal[];
+    id?: number;
+    username?: string;
+    password?: string;
+    profile?: profile;
+    address?: address;
+    wage?: wage;
+    animals?: animal[];
+};
+
+export type StatusMessage = {
+    message: string;
+    type: "error" | "success";
 };
