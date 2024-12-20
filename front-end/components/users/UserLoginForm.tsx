@@ -56,15 +56,9 @@ const UserLoginForm: React.FC = () => {
         JSON.stringify({
           token: user.token,
           username: user.username,
-          role: user.Role,
+          role: user.role,
         })
       );
-
-      // sessionStorage.setItem("Role",
-      //   JSON.stringify({
-      //     rol: user.role,
-      //   })
-      // )
 
       setStatusMessages([
         {

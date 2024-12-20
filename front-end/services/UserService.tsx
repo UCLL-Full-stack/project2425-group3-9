@@ -27,7 +27,7 @@ const getUserById = async (id: string) => {
       throw new Error("User is not logged in or token is missing");
     }
 
-    return fetch(process.env.NEXT_PUBLIC_API_URL + "/users/" + id, {
+    return fetch(process.env.NEXT_PUBLIC_API_URL + `/users/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -64,6 +64,8 @@ const updateUserWage = async (id: number, wage: { amount: number, seniority: num
         body: JSON.stringify(user),
     });
 };
+
+
   
 
   const UserService = {

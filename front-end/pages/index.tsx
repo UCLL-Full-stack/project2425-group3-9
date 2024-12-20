@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Header from '@components/header';
-// import Link from 'next/link';
 import styles from '@styles/home.module.css';
 
 const Home: React.FC = () => {
@@ -21,10 +20,8 @@ const Home: React.FC = () => {
 
         <div className={styles.description}>
           <p>
-            {/* Courses lets you see as a lecturer all the courses you are teaching
-            and as a student all the courses you are enrolled in. <br />
-            You can also see when the courses are scheduled and the students
-            enrolled in each course. */}
+            Welcome to the WagePage wabApplication. This site is made for employee's to see their coworkers information, their wage and animals if they own some. As administrators, this site is made for managing employee's their wages.
+            The administrators can also delete or add animals for users.
           </p>
         </div>
       </main>

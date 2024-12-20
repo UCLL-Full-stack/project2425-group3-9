@@ -2,6 +2,7 @@ import {Animal } from '../model/Animal';
 import animalDb from '../repository/animal.db';
 import userDb from '../repository/user.db';
 import { AnimalInput, Role } from '../types';
+import userService from './user.service';
 
 
 
@@ -30,12 +31,17 @@ const getAnimalByName = async (name: string): Promise<Animal> => {
 
 const addAnimal = async ({firstname, lastname, age} : AnimalInput, userid : number, username: string, role: Role): Promise<Animal> => {
     if (role === "admin") {
+    
+    const userExists = await userService.getUserById(userid, username, role);
+    if (!userExists) {
+          throw new Error(`User with id ${userid} does not exist.`);
+        }
     const animal = new Animal({firstname, lastname, age})
-    const alreadyExistingAnimal = await getAnimalByName(animal.getFirstname());
+    // const alreadyExistingAnimal = await getAnimalByName(animal.getFirstname());
 
-    if (alreadyExistingAnimal) {
-        throw new Error(`Animal with name ${animal.getFirstname()} already exists!`);
-    }
+    // if (alreadyExistingAnimal) {
+    //     throw new Error(`Animal with name ${animal.getFirstname()} already exists!`);
+    // }
     const addedAnimal = await animalDb.addAnimal(animal, userid);
     return addedAnimal;
     }

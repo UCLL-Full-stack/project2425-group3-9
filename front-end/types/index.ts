@@ -39,6 +39,7 @@ export type user = {
     id?: number;
     username?: string;
     password?: string;
+    role?: string;
     profile?: profile;
     address?: address;
     wage?: wage;
@@ -48,4 +49,8 @@ export type user = {
 export type StatusMessage = {
     message: string;
     type: "error" | "success";
+};
+
+export type LogInMessage = {
+    message: string;
 };

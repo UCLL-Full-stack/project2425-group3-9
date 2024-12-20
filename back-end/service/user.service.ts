@@ -16,7 +16,7 @@ const getAllUsers = async (username: string, role: Role): Promise<User[]> => {
     }
 };
 
-const getUserById = async (id: number, usernmae: string, role: Role): Promise<User> => {
+const getUserById = async (id: number, username: string, role: Role): Promise<User> => {
     if (role === "admin" || role === "caretaker" || role === "employee") {
     const user = await userDb.getUserById(id);
     if (!user) throw new Error(`User with id ${id} does not exist.`);
