@@ -3,12 +3,11 @@ import AnimalOverviewTable from "@components/animals/AnimalsOverviewTable";
 import AnimalsOverviewTableAdmin from "@components/animals/AnimalsOverviewTableAdmin";
 import OwnerInfo from "@components/animals/OwnerInfo";
 import Header from "@components/header";
-import UserService from "@services/UserService";
 import AnimalService from "@services/AnimalService";
 import UserService from "@services/UserService";
 import { animal, StatusMessage, user } from "@types";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import useInterval from "use-interval";
 
@@ -103,34 +102,39 @@ const Animals: React.FC = () => {
 
         {statusMessage.length === 0 && (
           <>
-
-          {isAdmin && (
-            <h2>Click on an animal to see additional information about its owner!</h2>
+          {!isAdmin && data && (
+            <section>
+            <h2>These are your animals!</h2>
+            <div>
+            <AnimalOverviewTable
+              animals={data.animals}
+              selectAnimal={selectAnimal}
+            />
+          </div>
+          </section>
+          )}
+          {isAdmin && data && (
+            <section>
+            <h2>Click on the deletebutton to delete an animal</h2>
+            <div>
+            <AnimalsOverviewTableAdmin
+              animals={data.animals}
+              selectAnimal={selectAnimal}
+              deleteAnimal={deleteAnimal}
+            />
+          </div>
+          </section>
           )}
         <section>
-          {data && (
-            <div>
-              <h2>Click on an animal to see additional information about its owner!</h2>
-              <AnimalsOverviewTableAdmin
-                animals={data.animals}
-                selectAnimal={selectAnimal}
-                deleteAnimal={deleteAnimal}
-              />
-            </div>
-          )}
+
         </section>
         <section>
             {selectedAnimal && users && isAdmin &&(
                 <OwnerInfo animal={selectedAnimal} users={users}/>
             )}
         </section>
-        {/* <section>
-        {isAdmin && animals && (
-            
-          )}
-        </section> */}
         <section>
-        {isAdmin && animals &&(
+        {isAdmin &&(
             <AnimalAdminPost/>
           )}
         </section>

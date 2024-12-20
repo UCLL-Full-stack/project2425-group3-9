@@ -8,11 +8,13 @@ import WageOverviewTable from '@components/wageoverview/WageOverviewTable';
 import UpdateWage from '@components/wageoverview/UpdateWage';
 import useSWR, { mutate } from 'swr';
 import useInterval from 'use-interval';
+import WageOverviewTableSolo from '@components/wageoverview/WageOverviewTableSolo';
 
 const Wage: React.FC = () => {
     const [users, setUsers] = useState<Array<user>>();
     const [statusMessages, setStatusMessages] = useState<StatusMessage[]>([]);
     const [isAdmin, setAdmin] = useState(false);
+    const [OwnUser, setOwnUser] = useState<user>();
     const [selectedUser, setSelectedUser] = useState<user | null>(
     null
   );
@@ -26,23 +28,26 @@ const Wage: React.FC = () => {
 
   useEffect(() => {
     const loggedInUser = sessionStorage.getItem("loggedInUser");
-
+  
     if (!loggedInUser) {
       setStatusMessages([
         {
-          message: `Login first to get the overview of wage...`,
+          message: "Login first to get the overview of wage...",
           type: "error",
         },
       ]);
-    
     } else {
       const user = JSON.parse(loggedInUser);
       if (user.role === "admin") {
-        setAdmin(true)
+        setAdmin(true);
       }
       getUsers();
+      const findOwnUser = users?.find((u) => u.username === user.username);
+      if (findOwnUser) {
+        setOwnUser(findOwnUser);
+      }
     }
-  }, []);
+  }, [users]);
 
   const selectUser = (user: user) => {
     setSelectedUser(user);
@@ -82,12 +87,19 @@ const Wage: React.FC = () => {
           {isAdmin && (
             <h2>Click on an employee to change data!</h2>
           )}
-          
           <section>
-              { users && (
+            {!isAdmin && OwnUser &&(
+              <WageOverviewTableSolo user = {OwnUser}/>
+            )
+
+            }
+          </section>
+          <section>
+              { isAdmin && users && (
                   <WageOverviewTable users= {users} selectUser={selectUser}/>
               )}       
           </section>
+          
           <section>
             { selectedUser && isAdmin && (
               <UpdateWage user={selectedUser}/>
