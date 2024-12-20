@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Language from './language';
 
 const Header: React.FC = () => {
   return (
@@ -27,12 +26,6 @@ const Header: React.FC = () => {
         <Link href="/logout" className="nav-link px-4 fs-5 text-white">
           Log out
         </Link>
-        {/* {loggedInUser && (
-          <div className= "text-white ms-5 mt-2 md:mt-0 pt-1 md:pt-0 grow">
-            {t("headel.welcome")}, {loggedInUser.fullname}!
-          </div>
-        )} */}
-        <Language/>
       </nav>
     </header>
   );

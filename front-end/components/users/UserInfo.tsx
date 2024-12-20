@@ -19,7 +19,7 @@ const UserInfo: React.FC<Props> = ({ user }: Props) => {
           </thead>
           <tbody>
               <tr>
-                <td>{user.address.street + "" + user.address.number}</td>
+                <td>{user.address.street}</td>
                 <td>{user.address.postalcode + " " + user.address.city}</td>
                 <td>{user.profile.phonenumber}</td>
               </tr>

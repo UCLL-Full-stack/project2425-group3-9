@@ -1,14 +1,10 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import Header from '@components/header';
-import {useTranslation} from "next-i18next";
-import { serverSideTranslations} from "next-i18next/serverSideTranslations"
+// import Link from 'next/link';
 import styles from '@styles/home.module.css';
 
 const Home: React.FC = () => {
-
-  const {t} = useTranslation();
-
   return (
     <>
       <Head>
@@ -20,25 +16,20 @@ const Home: React.FC = () => {
       <Header/>
       <main className={styles.main}>
         <span>
-          <h1>t("app.welcome")</h1>
+          <h1>Welcome!</h1>
         </span>
 
         <div className={styles.description}>
+          <p>
+            {/* Courses lets you see as a lecturer all the courses you are teaching
+            and as a student all the courses you are enrolled in. <br />
+            You can also see when the courses are scheduled and the students
+            enrolled in each course. */}
+          </p>
         </div>
       </main>
     </>
   );
-};
-
-
-export const getServerSideProps = async (context) => {
-  const { locale } = context;
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? "en", ["common"])),
-    },
-  };
 };
 
 export default Home;
