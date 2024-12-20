@@ -33,6 +33,21 @@ const Animals: React.FC = () => {
     getAnimals()
   }, [])
 
+  // useEffect(() => {
+  //   const loggedInUser = sessionStorage.getItem("loggedInUser");
+
+  //   if (!loggedInUser) {
+  //     setStatusMessages([
+  //       {
+  //         message: `Login first to get the overview of Coworkers...`,
+  //         type: "error",
+  //       },
+  //     ]);
+  //   } else {
+  //     getUsers();
+  //   }
+  // }, []);
+
   const selectAnimal = (animal: animal) => {
     setSelectedAnimal(animal);
   };
