@@ -3,6 +3,7 @@ import { Profile as profilePrisma,
 } from "@prisma/client"
 
 export class Profile {
+    private id?: number;
     private email: string;
     private firstname: string;
     private lastname: string;
@@ -10,6 +11,7 @@ export class Profile {
     private phonenumber: string;
 
     constructor(Profile: {
+        id?: number;
         email: string;
         firstname: string;
         lastname: string;
@@ -17,6 +19,7 @@ export class Profile {
         phonenumber: string;
 
     }) {
+        this.id = Profile.id;
         this.email = this.validateEmail(Profile.email);
         this.firstname = this.validateFirstName(Profile.firstname);
         this.lastname = this.validateLastName(Profile.lastname);
@@ -38,6 +41,10 @@ export class Profile {
 
     getAge(): number {
         return this.age;
+    }
+
+    getId(): number | undefined {
+        return this.id;
     }
 
     getPhonenumber(): string {
@@ -96,8 +103,9 @@ export class Profile {
         return age;
     }
 
-    static from({ email, firstname, lastname, age, phonenumber }: profilePrisma)  {
+    static from({ id, email, firstname, lastname, age, phonenumber }: profilePrisma)  {
         return new Profile({
+            id,
             email,
             firstname,
             lastname,

@@ -40,7 +40,7 @@
  */
 import express, { NextFunction, Request, Response } from 'express';
 import userService from '../service/user.service';
-import { UserInput } from '../types';
+import { Role, UserInput } from '../types';
 
 
 const userRouter = express.Router();
@@ -51,6 +51,10 @@ export { userRouter };
  * @swagger
  * /users:
  *   get:
+ *     tags:
+ *       - Users
+ *     security:
+ *      - bearerAuth: []
  *     summary: Retrieves a list of all users
  *     description: Returns an array of users.
  *     responses:
@@ -61,11 +65,13 @@ export { userRouter };
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/users'
+ *                 $ref: '#/components/schemas/User'
  */
 userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const users = await userService.getAllUsers();
+        const request = req as Request & { auth: { username: string; role: Role } };
+        const { username, role } = request.auth;
+        const users = await userService.getAllUsers(username, role);
         res.status(200).json(users);
     } catch (error) {
         next(error);
@@ -76,6 +82,10 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
  * @swagger
  * /users/{id}:
  *   get:
+ *     tags:
+ *       - Users
+ *     security:
+ *      - bearerAuth: []
  *     summary: Get a user by ID.
  *     parameters:
  *       - name: id
@@ -95,8 +105,10 @@ userRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
 userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { username: string; role: Role } };
+        const { username, role } = request.auth;
         const id = parseInt(req.params.id);
-        const user = await userService.getUserById(id);
+        const user = await userService.getUserById(id, username, role);
         res.status(200).json(user);
     } catch (error) {
         next(error);
@@ -107,6 +119,10 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /users/updateWage:
  *   put:
+ *     tags:
+ *       - Users
+ *     security:
+ *      - bearerAuth: []
  *     summary: Update the wage of a user
  *     description: Updates the wage of a user specified by the ID.
  *     requestBody:
@@ -143,8 +159,10 @@ userRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) =
  */
 userRouter.put('/updateWage', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { username: string; role: Role } };
+        const { username, role } = request.auth;
         const { id, wage } = req.body;
-        const updatedUser = await userService.updateWage(id, wage);
+        const updatedUser = await userService.updateWage(id, wage, username, role);
         res.status(200).json(updatedUser);
     } catch (error) {
         next(error);
@@ -226,6 +244,8 @@ userRouter.post('/login', async (req: Request, res: Response, next: NextFunction
  * @swagger
  * /users/signup:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: Create a user
  *     requestBody:
  *       required: true

@@ -83,7 +83,7 @@ async function main() {
     data: {
       username: 'jane_doe',
       password: hashedPassword2,
-      role: "admin",
+      role: "employee",
       address: {
         connect: { id: address2.id }
       },

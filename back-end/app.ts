@@ -6,9 +6,13 @@ import swaggerUi from 'swagger-ui-express';
 import { userRouter } from './controller/user.routes';
 import { animalRouter } from './controller/animal.routes';
 import { expressjwt } from 'express-jwt';
+import { workspaceRouter } from './controller/workspace.routes';
+import { wageRouter } from './controller/wages.routes';
+
 
 const app = express();
 dotenv.config();
+
 
 const port = Number(process.env.APP_PORT) || 3000;
 
@@ -17,12 +21,13 @@ if (!process.env.JWT_SECRET) {
     process.exit(1); 
 }
 
+
 app.use(
     expressjwt({
         secret: process.env.JWT_SECRET,
         algorithms: ['HS256'],
     }).unless({
-        path: ['/api-docs', /^\/api-docs\/.*/, '/status', '/animals', '/users', '/users/login', '/login', '/users/signup'],
+        path: ['/api-docs', /^\/api-docs\/.*/, '/users/login', '/login', '/users/signup'],
     })
 );
 
@@ -62,6 +67,10 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/users', userRouter);
 app.use('/animals', animalRouter);
+app.use('/workspaces', workspaceRouter);
+app.use('/wages', wageRouter);
+
+
 
 app.listen(port, () => {
     console.log(`Backend is running on port ${port}.`);

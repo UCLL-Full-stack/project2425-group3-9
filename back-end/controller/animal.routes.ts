@@ -18,6 +18,7 @@
 
 import express, { Request, Response, NextFunction } from 'express';
 import animalService from '../service/animal.service';
+import { Role } from '../types';
 
 const animalRouter = express.Router();
 
@@ -27,6 +28,10 @@ export { animalRouter };
  * @swagger
  * /animals:
  *   get:
+ *     tags:
+ *       - Animals
+ *     security:
+ *      - bearerAuth: []
  *     summary: Retrieves a list of all animals
  *     description: Returns an array of all animals in the system.
  *     responses:
@@ -43,7 +48,9 @@ export { animalRouter };
  */
 animalRouter.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const animals = await animalService.getAllAnimals();
+        const request = req as Request & { auth: { username: string; role: Role } };
+        const { username, role } = request.auth;
+        const animals = await animalService.getAllAnimals(username, role);
         res.status(200).json(animals);
     } catch (error) {
         next(error);
@@ -54,6 +61,10 @@ animalRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
  * @swagger
  * /animals:
  *   post:
+ *     tags:
+ *       - Animals
+ *     security:
+ *      - bearerAuth: []
  *     summary: Add a new animal
  *     description: Adds a new animal to the list.
  *     requestBody:
@@ -89,8 +100,10 @@ animalRouter.get('/', async (req: Request, res: Response, next: NextFunction) =>
  */
 animalRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { username: string; role: Role } };
+        const { username, role } = request.auth;
         const { firstname, lastname, age, userid } = req.body;
-        const newAnimal = await animalService.addAnimal( {firstname, lastname, age} , userid);
+        const newAnimal = await animalService.addAnimal( {firstname, lastname, age} , userid, username, role);
         res.status(200).json(newAnimal);
     } catch (error) {
         next(error);
@@ -101,6 +114,10 @@ animalRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
  * @swagger
  * /animals/{firstname}:
  *   delete:
+ *     tags:
+ *       - Animals
+ *     security:
+ *      - bearerAuth: []
  *     summary: Delete an animal by its first name
  *     description: Deletes an animal from the list using its first name.
  *     parameters:
@@ -120,17 +137,11 @@ animalRouter.post('/', async (req: Request, res: Response, next: NextFunction) =
  */
 animalRouter.delete('/:firstname', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const request = req as Request & { auth: { username: string; role: Role } };
+        const { username, role } = request.auth;
         const { firstname } = req.params;
 
-        // if (!firstname) {
-        //     return res.status(400).json({ error: 'Firstname is required.' });
-        // }
-
-        await animalService.deleteAnimal(firstname);
-
-        // if (!deletedAnimal) {
-        //     return res.status(404).json({ error: 'Animal not found.' });
-        // }
+        await animalService.deleteAnimal(firstname, username, role);
 
         res.status(200).json({ message: `Animal with firstname '${firstname}' successfully deleted.` });
     } catch (error) {

@@ -75,27 +75,6 @@ const getUserByUsername = async ({username}: {username: string}) : Promise<User>
 };
 
 
-// const createUser = async (user: User): Promise<User> => {
-//     try {
-//         const userPrisma = await database.user.create({
-//             data: { 
-//                 username: user.getUsername(), 
-//                 password: user.getPassword(), 
-//                 admin: user.isAdmin(), 
-//                 profile: undefined,
-//                 workspace: undefined,
-//                 address: undefined,
-//                 wage: undefined, 
-//                 animals: undefined,
-//             },
-//         });
-//         return User.from(userPrisma);
-//     } catch (error) {
-//         console.error(error);
-//         throw new Error("Database error. See server log for details.");
-//     }
-// };
-
 
 const createUser = async (user: User): Promise<User> => {
     try {
