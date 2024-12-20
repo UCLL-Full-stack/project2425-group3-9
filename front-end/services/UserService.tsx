@@ -55,7 +55,8 @@ const updateUserWage = async (id: number, wage: { amount: number, seniority: num
     });
 };
 
-  const loginUser = (user: user) => {
+const loginUser = (user: user) => {
+    console.log(process.env.NEXT_PUBLIC_API_URL);
     return fetch(process.env.NEXT_PUBLIC_API_URL + "/users/login", {
         method: "POST",
         headers: {
@@ -72,7 +73,7 @@ const updateUserWage = async (id: number, wage: { amount: number, seniority: num
     getAllUsers,
     getUserById,
     updateUserWage,
-    loginUser
+    loginUser,
   };
   
   export default UserService;

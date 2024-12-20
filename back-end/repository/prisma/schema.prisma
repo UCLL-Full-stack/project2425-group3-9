@@ -59,9 +59,9 @@ model Wage {
 
 model Animal {
   id          Int       @id @default(autoincrement())
-  firstname String    @unique
+  firstname String      @unique
   lastname  String
   age       Int
   userId    Int    
-  user      User?   @relation(fields: [userId], references: [id])
+  user      User?       @relation(fields: [userId], references: [id])
 }

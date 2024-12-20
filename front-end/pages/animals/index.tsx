@@ -1,14 +1,16 @@
 import AnimalAdminPost from "@components/animals/AnimalAdminPost";
-import AnimalsOverviewTable from "@components/animals/AnimalsOverviewTable";
+import AnimalOverviewTable from "@components/animals/AnimalsOverviewTable";
+import AnimalsOverviewTableAdmin from "@components/animals/AnimalsOverviewTableAdmin";
 import OwnerInfo from "@components/animals/OwnerInfo";
 import Header from "@components/header";
-import UserInfo from "@components/users/UserInfo";
-import UserOverviewTable from "@components/users/UserOverviewTable";
+import UserService from "@services/UserService";
 import AnimalService from "@services/AnimalService";
 import UserService from "@services/UserService";
 import { animal, StatusMessage, user } from "@types";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR, { mutate } from "swr";
+import useInterval from "use-interval";
 
 const Animals: React.FC = () => {
 
@@ -19,19 +21,24 @@ const Animals: React.FC = () => {
   const [selectedAnimal, setSelectedAnimal] = useState<animal | null>(null);
   
 
-  const getAnimals = async () => {
-      const response = await AnimalService.getAllAnimals();
-      const animals = await response.json();
-      setAnimals(animals);
-  }
+  const getAnimalsAndUsers = async () => {
+    const responses = await Promise.all([
+      AnimalService.getAllAnimals(),
+      UserService.getAllUsers(),
+    ]);
+    const [animalsResponse, usersResponse] = responses;
 
-  const getUsers = async () => {
-    const response = await UserService.getAllUsers();
-    const users = await response.json();
-    setUsers(users);
-    
-  }
+    const animals = await animalsResponse.json();
+    const users = await usersResponse.json();
 
+    return { animals, users };
+  };
+
+  const { data, isLoading, error } = useSWR("animalsAndUsers", getAnimalsAndUsers);
+
+  useInterval(() => {
+    mutate("animalsAndUsers", getAnimalsAndUsers());
+  }, 5000);
 
   useEffect(() => {
     const loggedInUser = sessionStorage.getItem("loggedInUser");
@@ -48,8 +55,7 @@ const Animals: React.FC = () => {
       if (user.role === "admin") {
         setAdmin(true)
       }
-      getAnimals();
-      getUsers();
+      getAnimalsAndUsers();
     }
   }, []);
 
@@ -57,6 +63,18 @@ const Animals: React.FC = () => {
     setSelectedAnimal(animal);
   };
 
+  const deleteAnimal = async (animal: animal) => {
+    try {
+      await AnimalService.deleteAnimal(animal.firstname);
+      mutate("animalsAndUsers");
+    } catch (error) {
+      console.error("Error deleting animal:", error);
+      alert("Failed to delete animal. Please try again.");
+    }
+  };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <div className="text-red-800">Error: {error}</div>;
 
   return (
     <>
@@ -90,13 +108,16 @@ const Animals: React.FC = () => {
             <h2>Click on an animal to see additional information about its owner!</h2>
           )}
         <section>
-            { animals && (
-                <div>
-                  
-                  <AnimalsOverviewTable animals= {animals} selectAnimal={selectAnimal}/>
-                </div>
-                
-            )}       
+          {data && (
+            <div>
+              <h2>Click on an animal to see additional information about its owner!</h2>
+              <AnimalsOverviewTableAdmin
+                animals={data.animals}
+                selectAnimal={selectAnimal}
+                deleteAnimal={deleteAnimal}
+              />
+            </div>
+          )}
         </section>
         <section>
             {selectedAnimal && users && isAdmin &&(
@@ -121,5 +142,3 @@ const Animals: React.FC = () => {
 };
 
 export default Animals;
-
-

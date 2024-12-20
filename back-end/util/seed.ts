@@ -21,7 +21,7 @@ async function main() {
     },
   });
 
-    const hashedPassword1 = await bcrypt.hash("John123", 12);
+  const hashedPassword1 = await bcrypt.hash("John123", 12);
 
   const user1 = await prisma.user.create({
     data: {
@@ -41,7 +41,10 @@ async function main() {
           workspaces: {
             create: [
               {
-                name: 'Workspace A', 
+                name: 'Innovation Hub',
+              },
+              {
+                name: 'Tech Lab',
               },
             ],
           },
@@ -62,6 +65,31 @@ async function main() {
             lastname: 'The Dog',
             age: 5,
           },
+          {
+            firstname: 'Fluffy',
+            lastname: 'The Rabbit',
+            age: 2,
+          },
+          {
+            firstname: 'Tweety',
+            lastname: 'The Bird',
+            age: 1,
+          },
+          {
+            firstname: 'Nibbles',
+            lastname: 'The Hamster',
+            age: 1,
+          },
+          {
+            firstname: 'Shelly',
+            lastname: 'The Turtle',
+            age: 3,
+          },
+          {
+            firstname: 'Charlie',
+            lastname: 'The Parrot',
+            age: 2,
+          },
         ],
       },
     },
@@ -77,6 +105,7 @@ async function main() {
       country: 'USA',
     },
   });
+
   const hashedPassword2 = await bcrypt.hash("Jane123", 12);
 
   const user2 = await prisma.user.create({
@@ -97,7 +126,10 @@ async function main() {
           workspaces: {
             create: [
               {
-                name: 'Workspace B', 
+                name: 'Creative Studio', 
+              },
+              {
+                name: 'Marketing Office', 
               },
             ],
           },
@@ -117,6 +149,224 @@ async function main() {
             firstname: 'Mittens',
             lastname: 'The Cat',
             age: 3,
+          },
+          {
+            firstname: 'Goldie',
+            lastname: 'The Fish',
+            age: 1,
+          },
+          {
+            firstname: 'Rocky',
+            lastname: 'The Guinea Pig',
+            age: 2,
+          },
+          {
+            firstname: 'Bubbles_Jane',  
+            lastname: 'The Fish',
+            age: 1,
+          },
+          {
+            firstname: 'Max_Jane',  
+            lastname: 'The Dog',
+            age: 4,
+          },
+          {
+            firstname: 'Oscar_Jane',  
+            lastname: 'The Frog',
+            age: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  const user3 = await prisma.user.create({
+    data: {
+      username: 'Niels_Winant',
+      password: hashedPassword2,
+      role: "caretaker",
+      address: {
+        connect: { id: address2.id }
+      },
+      profile: {
+        create: {
+          email: 'niels@example.com',
+          firstname: 'Niels',
+          lastname: 'Winant',
+          age: 18,
+          phonenumber: '0456084335',
+          workspaces: {
+            create: [
+              {
+                name: 'Sales', 
+              },
+              {
+                name: 'Dolphin aquarium',
+              },
+            ],
+          },
+        },
+      },
+      wage: {
+        create: {
+          total: 1200,
+          amount: 1000,
+          seniority: 5,
+          bonus: 200,
+        },
+      },
+      animals: {
+        create: [
+          {
+            firstname: 'Rico',
+            lastname: 'The Cat',
+            age: 3,
+          },
+          {
+            firstname: 'Spirou',
+            lastname: 'The Dolphin',
+            age: 1,
+          },
+          {
+            firstname: 'Cisco',
+            lastname: 'The Penguin',
+            age: 2,
+          },
+          {
+            firstname: 'Bubbles_Niels',  
+            lastname: 'The Dolphin',
+            age: 1,
+          },
+          {
+            firstname: 'Max_Niels',  
+            lastname: 'The Dolphin',
+            age: 4,
+          },
+          {
+            firstname: 'Oscar_Niels',  
+            lastname: 'The Dolphin',
+            age: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  const user4 = await prisma.user.create({
+    data: {
+      username: 'Maarten_Geykens',
+      password: hashedPassword2,
+      role: "admin",
+      address: {
+        connect: { id: address2.id }
+      },
+      profile: {
+        create: {
+          email: 'Maarten_Geykens@example.com',
+          firstname: 'Maarten',
+          lastname: 'Geykens',
+          age: 24,
+          phonenumber: '0456084235',
+          workspaces: {
+            create: [
+              {
+                name: 'Marketing', 
+              },
+              {
+                name: 'Shark aquarium',
+              },
+            ],
+          },
+        },
+      },
+      wage: {
+        create: {
+          total: 1100,
+          amount: 800,
+          seniority: 2,
+          bonus: 300,
+        },
+      },
+      animals: {
+        create: [
+          {
+            firstname: 'Mishko',
+            lastname: 'The Cat',
+            age: 3,
+          },
+          {
+            firstname: 'Martijn',
+            lastname: 'The Shark',
+            age: 1,
+          },
+          {
+            firstname: 'Pieter',
+            lastname: 'The Shark',
+            age: 2,
+          },
+          {
+            firstname: 'Bert',
+            lastname: 'The Shark',
+            age: 1,
+          },
+          {
+            firstname: 'Maxim',
+            lastname: 'The Shark',
+            age: 4,
+          },
+          {
+            firstname: 'Christian',
+            lastname: 'The Shark',
+            age: 1,
+          },
+        ],
+      },
+    },
+  });
+
+  const user5 = await prisma.user.create({
+    data: {
+      username: 'Julia_Roberts',
+      password: hashedPassword2,
+      role: "caretaker",
+      address: {
+        connect: { id: address2.id }
+      },
+      profile: {
+        create: {
+          email: 'Julia_Roberts@example.com',
+          firstname: 'Julia',
+          lastname: 'Roberts',
+          age: 43,
+          phonenumber: '0409084235',
+          workspaces: {
+            create: [
+              {
+                name: 'HR', 
+              },
+            ],
+          },
+        },
+      },
+      wage: {
+        create: {
+          total: 1400,
+          amount: 1000,
+          seniority: 6,
+          bonus: 400,
+        },
+      },
+      animals: {
+        create: [
+          {
+            firstname: 'Miauwkes',
+            lastname: 'The Cat',
+            age: 3,
+          },
+          {
+            firstname: 'Maarte',
+            lastname: 'The Hond',
+            age: 1,
           },
         ],
       },

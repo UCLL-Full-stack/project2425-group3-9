@@ -1,14 +1,13 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import Header from '@components/header';
-import Link from 'next/link';
 import styles from '@styles/home.module.css';
 import { useEffect, useState } from 'react';
 import { StatusMessage, user } from '@types';
 import UserService from '@services/UserService';
 import WageOverviewTable from '@components/wageoverview/WageOverviewTable';
 import UpdateWage from '@components/wageoverview/UpdateWage';
-
+import useSWR, { mutate } from 'swr';
+import useInterval from 'use-interval';
 
 const Wage: React.FC = () => {
     const [users, setUsers] = useState<Array<user>>();
